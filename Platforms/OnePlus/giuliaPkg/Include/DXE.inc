@@ -22,7 +22,7 @@
   INF EmbeddedPkg/MetronomeDxe/MetronomeDxe.inf
   INF MdeModulePkg/Universal/HiiDatabaseDxe/HiiDatabaseDxe.inf
 
-#  INF Binaries/giulia/QcomPkg/Drivers/QcomWDogDxe/QcomWDogDxe.inf
+  INF Binaries/giulia/QcomPkg/Drivers/QcomWDogDxe/QcomWDogDxe.inf
   INF ArmPkg/Drivers/ArmGicDxe/ArmGicDxe.inf
   INF ArmPkg/Drivers/TimerDxe/TimerDxe.inf
 
