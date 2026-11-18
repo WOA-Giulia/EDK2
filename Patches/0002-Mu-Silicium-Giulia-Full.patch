@@ -1,0 +1,1030 @@
+diff --git a/Platforms/OnePlus/giuliaPkg/Include/APRIORI.inc b/Platforms/OnePlus/giuliaPkg/Include/APRIORI.inc
+index 8d2da351..b553effa 100644
+--- a/Platforms/OnePlus/giuliaPkg/Include/APRIORI.inc
++++ b/Platforms/OnePlus/giuliaPkg/Include/APRIORI.inc
+@@ -22,7 +22,7 @@ APRIORI DXE {
+   INF Binaries/giulia/QcomPkg/Drivers/ULogDxe/ULogDxe.inf
+   INF Binaries/giulia/QcomPkg/Drivers/IPCCDxe/IPCCDxe.inf
+   INF Binaries/giulia/QcomPkg/Drivers/Smp2pDxe/Smp2pDxe.inf
+-  INF Binaries/giulia/QcomPkg/Drivers/SSRDxe/SSRDxe.inf
++#    INF Binaries/giulia/QcomPkg/Drivers/SSRDxe/SSRDxe.inf
+   INF Binaries/giulia/QcomPkg/Drivers/CmdDbDxe/CmdDbDxe.inf
+   INF Binaries/giulia/QcomPkg/Drivers/PwrUtilsDxe/PwrUtilsDxe.inf
+   INF Binaries/giulia/QcomPkg/Drivers/NpaDxe/NpaDxe.inf
+@@ -32,6 +32,7 @@ APRIORI DXE {
+   INF Binaries/giulia/QcomPkg/Drivers/ICBDxe/ICBDxe.inf
+   INF Binaries/giulia/QcomPkg/Drivers/ShmBridgeDxe/ShmBridgeDxeLA.inf
+   INF Binaries/giulia/QcomPkg/Drivers/TzDxe/ScmDxeCompat.inf
++  INF Binaries/giulia/QcomPkg/Drivers/TzDxe/TzDxeLA.inf
+   INF Binaries/giulia/QcomPkg/Drivers/TLMMDxe/TLMMDxe.inf
+   INF Binaries/giulia/QcomPkg/Drivers/I2CDxe/I2CDxe.inf
+   INF Binaries/giulia/QcomPkg/Drivers/SPMIDxe/SPMIDxe.inf
+@@ -49,15 +50,14 @@ APRIORI DXE {
+ 
+   INF FatPkg/EnhancedFatDxe/Fat.inf
+ 
+-  INF Binaries/giulia/QcomPkg/Drivers/TzDxe/TzDxeLA.inf
+ 
+   INF MdeModulePkg/Universal/Variable/RuntimeDxe/VariableRuntimeDxe.inf
+ 
+   INF Binaries/giulia/QcomPkg/Drivers/DDRInfoDxe/DDRInfoDxe.inf
+   INF Binaries/giulia/QcomPkg/Drivers/OcdtDxe/OplusProject.inf
+-  INF Binaries/giulia/QcomPkg/Drivers/FeatureEnablerDxe/FeatureEnablerDxe.inf
+-  INF Binaries/giulia/QcomPkg/Drivers/PILProxyDxe/PILProxyDxe.inf
+-  INF Binaries/giulia/QcomPkg/Drivers/PILDxe/PILDxe.inf
++#    INF Binaries/giulia/QcomPkg/Drivers/FeatureEnablerDxe/FeatureEnablerDxe.inf
++#    INF Binaries/giulia/QcomPkg/Drivers/PILProxyDxe/PILProxyDxe.inf
++#    INF Binaries/giulia/QcomPkg/Drivers/PILDxe/PILDxe.inf
+   INF Binaries/giulia/QcomPkg/Drivers/GLinkDxe/GLinkDxe.inf
+ 
+   INF MdeModulePkg/Universal/WatchdogTimerDxe/WatchdogTimer.inf
+@@ -71,9 +71,9 @@ APRIORI DXE {
+   INF MdeModulePkg/Universal/BdsDxe/BdsDxe.inf
+ 
+   INF Binaries/giulia/QcomPkg/Drivers/SPIDxe/SPIDxe.inf
+-  INF Binaries/giulia/QcomPkg/Drivers/PmicGlinkDxe/PmicGlinkDxe.inf
+-  INF Binaries/giulia/QcomPkg/Drivers/UsbPwrCtrlDxe/UsbPwrCtrlDxe.inf
+-  INF Binaries/giulia/QcomPkg/Drivers/QcomChargerDxe/QcomChargerDxeLA.inf
++#    INF Binaries/giulia/QcomPkg/Drivers/PmicGlinkDxe/PmicGlinkDxe.inf
++#    INF Binaries/giulia/QcomPkg/Drivers/UsbPwrCtrlDxe/UsbPwrCtrlDxe.inf
++#    INF Binaries/giulia/QcomPkg/Drivers/QcomChargerDxe/QcomChargerDxeLA.inf
+   INF Binaries/giulia/QcomPkg/Drivers/ChargerExDxe/ChargerExDxe.inf
+   INF Binaries/giulia/QcomPkg/Drivers/UsbfnDwc3Dxe/UsbfnDwc3Dxe.inf
+   INF Binaries/giulia/QcomPkg/Drivers/XhciPciEmulationDxe/XhciPciEmulationDxe.inf
+@@ -87,7 +87,7 @@ APRIORI DXE {
+   INF Binaries/giulia/QcomPkg/Drivers/UsbDeviceDxe/UsbDeviceDxe.inf
+   INF Binaries/giulia/QcomPkg/Drivers/UsbConfigDxe/UsbConfigDxe.inf
+   INF Binaries/giulia/QcomPkg/Drivers/ButtonsDxe/ButtonsDxe.inf
+-  INF Binaries/giulia/QcomPkg/Drivers/TsensDxe/TsensDxe.inf
++#    INF Binaries/giulia/QcomPkg/Drivers/TsensDxe/TsensDxe.inf
+ 
+ !if $(USE_CUSTOM_DISPLAY_DRIVER) == 1
+   INF Binaries/giulia/QcomPkg/Drivers/DisplayDxe/DisplayDxe.inf
+@@ -95,9 +95,9 @@ APRIORI DXE {
+   INF SiliciumPkg/Drivers/SimpleFbDxe/SimpleFbDxe.inf
+ !endif
+ 
+-  INF Binaries/giulia/QcomPkg/Drivers/LimitsDxe/LimitsDxe.inf
++#    INF Binaries/giulia/QcomPkg/Drivers/LimitsDxe/LimitsDxe.inf
+ !if $(USE_CUSTOM_DISPLAY_DRIVER) == 1
+-  INF Binaries/giulia/QcomPkg/Drivers/CPRDxe/CPRDxe.inf
++#    INF Binaries/giulia/QcomPkg/Drivers/CPRDxe/CPRDxe.inf
+ !endif
+   INF Binaries/giulia/QcomPkg/Drivers/GpiDxe/GpiDxe.inf
+   INF Binaries/giulia/QcomPkg/Drivers/UCDxe/UCDxe.inf
+diff --git a/Platforms/OnePlus/giuliaPkg/Include/DXE.inc b/Platforms/OnePlus/giuliaPkg/Include/DXE.inc
+index 6712a076..3623d6c6 100644
+--- a/Platforms/OnePlus/giuliaPkg/Include/DXE.inc
++++ b/Platforms/OnePlus/giuliaPkg/Include/DXE.inc
+@@ -21,6 +21,8 @@
+   INF EmbeddedPkg/RealTimeClockRuntimeDxe/RealTimeClockRuntimeDxe.inf
+   INF EmbeddedPkg/MetronomeDxe/MetronomeDxe.inf
+   INF MdeModulePkg/Universal/HiiDatabaseDxe/HiiDatabaseDxe.inf
++
++#  INF Binaries/giulia/QcomPkg/Drivers/QcomWDogDxe/QcomWDogDxe.inf
+   INF ArmPkg/Drivers/ArmGicDxe/ArmGicDxe.inf
+   INF ArmPkg/Drivers/TimerDxe/TimerDxe.inf
+ 
+@@ -40,7 +42,6 @@
+   INF FatPkg/EnhancedFatDxe/Fat.inf
+   INF MdeModulePkg/Universal/Disk/UnicodeCollation/EnglishDxe/EnglishDxe.inf
+ 
+-  INF Binaries/giulia/QcomPkg/Drivers/UFSDxe/UFSDxe.inf
+   INF Binaries/giulia/QcomPkg/Drivers/CmdDbDxe/CmdDbDxe.inf
+   INF Binaries/giulia/QcomPkg/Drivers/PwrUtilsDxe/PwrUtilsDxe.inf
+   INF Binaries/giulia/QcomPkg/Drivers/RpmhDxe/RpmhDxe.inf
+@@ -51,6 +52,7 @@
+   INF Binaries/giulia/QcomPkg/Drivers/SPMIDxe/SPMIDxe.inf
+   INF Binaries/giulia/QcomPkg/Drivers/ICBDxe/ICBDxe.inf
+   INF Binaries/giulia/QcomPkg/Drivers/SmemDxe/SmemDxe.inf
++  INF Binaries/giulia/QcomPkg/Drivers/UFSDxe/UFSDxe.inf
+ 
+   INF MdeModulePkg/Universal/BdsDxe/BdsDxe.inf
+ 
+@@ -63,13 +65,13 @@
+   INF MdeModulePkg/Universal/Console/GraphicsConsoleDxe/GraphicsConsoleDxe.inf
+ 
+ !if $(USE_CUSTOM_DISPLAY_DRIVER) == 1
+-  INF Binaries/giulia/QcomPkg/Drivers/CPRDxe/CPRDxe.inf
++#    INF Binaries/giulia/QcomPkg/Drivers/CPRDxe/CPRDxe.inf
+ !endif
+   INF Binaries/giulia/QcomPkg/Drivers/GpiDxe/GpiDxe.inf
+   INF Binaries/giulia/QcomPkg/Drivers/SPIDxe/SPIDxe.inf
+   INF Binaries/giulia/QcomPkg/Drivers/I2CDxe/I2CDxe.inf
+   INF Binaries/giulia/QcomPkg/Drivers/SdccDxe/SdccDxe.inf
+-  INF Binaries/giulia/QcomPkg/Drivers/FeatureEnablerDxe/FeatureEnablerDxe.inf
++#    INF Binaries/giulia/QcomPkg/Drivers/FeatureEnablerDxe/FeatureEnablerDxe.inf
+ 
+ !if $(USE_CUSTOM_DISPLAY_DRIVER) == 1
+   INF Binaries/giulia/QcomPkg/Drivers/DisplayDxe/DisplayDxe.inf
+@@ -81,15 +83,15 @@
+   INF Binaries/giulia/QcomPkg/Drivers/ChargerExDxe/ChargerExDxe.inf
+   INF Binaries/giulia/QcomPkg/Drivers/IPCCDxe/IPCCDxe.inf
+   INF Binaries/giulia/QcomPkg/Drivers/Smp2pDxe/Smp2pDxe.inf
+-  INF Binaries/giulia/QcomPkg/Drivers/SSRDxe/SSRDxe.inf
++#    INF Binaries/giulia/QcomPkg/Drivers/SSRDxe/SSRDxe.inf
+   # Crashes
+   # INF Binaries/giulia/QcomPkg/Drivers/GLinkDxe/GLinkDxe.inf
+   INF Binaries/giulia/QcomPkg/Drivers/OcdtDxe/OplusProject.inf
+-  INF Binaries/giulia/QcomPkg/Drivers/PmicGlinkDxe/PmicGlinkDxe.inf
+-  INF Binaries/giulia/QcomPkg/Drivers/QcomChargerDxe/QcomChargerDxeLA.inf
+-  INF Binaries/giulia/QcomPkg/Drivers/UsbPwrCtrlDxe/UsbPwrCtrlDxe.inf
+-  INF Binaries/giulia/QcomPkg/Drivers/TsensDxe/TsensDxe.inf
+-  INF Binaries/giulia/QcomPkg/Drivers/LimitsDxe/LimitsDxe.inf
++#    INF Binaries/giulia/QcomPkg/Drivers/PmicGlinkDxe/PmicGlinkDxe.inf
++#    INF Binaries/giulia/QcomPkg/Drivers/QcomChargerDxe/QcomChargerDxeLA.inf
++#    INF Binaries/giulia/QcomPkg/Drivers/UsbPwrCtrlDxe/UsbPwrCtrlDxe.inf
++#    INF Binaries/giulia/QcomPkg/Drivers/TsensDxe/TsensDxe.inf
++#    INF Binaries/giulia/QcomPkg/Drivers/LimitsDxe/LimitsDxe.inf
+   INF Binaries/giulia/QcomPkg/Drivers/DDRInfoDxe/DDRInfoDxe.inf
+   INF Binaries/giulia/QcomPkg/Drivers/UsbfnDwc3Dxe/UsbfnDwc3Dxe.inf
+   INF Binaries/giulia/QcomPkg/Drivers/XhciPciEmulationDxe/XhciPciEmulationDxe.inf
+@@ -105,5 +107,5 @@
+   INF Binaries/giulia/QcomPkg/Drivers/UsbInitDxe/UsbInitDxe.inf
+   INF Binaries/giulia/QcomPkg/Drivers/UCDxe/UCDxe.inf
+   INF Binaries/giulia/QcomPkg/Drivers/RNGDxe/RngDxe.inf
+-  INF Binaries/giulia/QcomPkg/Drivers/PILDxe/PILDxe.inf
+-  INF Binaries/giulia/QcomPkg/Drivers/PILProxyDxe/PILProxyDxe.inf
++#    INF Binaries/giulia/QcomPkg/Drivers/PILDxe/PILDxe.inf
++#    INF Binaries/giulia/QcomPkg/Drivers/PILProxyDxe/PILProxyDxe.inf
+diff --git a/Platforms/OnePlus/giuliaPkg/Library/MemoryMapLib/MemoryMapLib.c b/Platforms/OnePlus/giuliaPkg/Library/MemoryMapLib/MemoryMapLib.c
+index f9023c85..08c2117c 100644
+--- a/Platforms/OnePlus/giuliaPkg/Library/MemoryMapLib/MemoryMapLib.c
++++ b/Platforms/OnePlus/giuliaPkg/Library/MemoryMapLib/MemoryMapLib.c
+@@ -6,13 +6,22 @@ gMemoryDescriptor[] = {
+   // Name, Address, Length, HobOption, ResourceType, ResourceAttribute, MemoryType, ArmAttribute
+ 
+   // DDR Regions
++  {"TZ_HYP_Reserved",       0x80000000, 0x016E0000, AddMem, MEM_RES, UNCACHEABLE, Reserv, UNCACHED_UNBUFFERED_XN},
+   {"RSRV0",               0x816E0000, 0x00320000, AddMem, SYS_MEM, SYS_MEM_CAP, Reserv, WRITE_BACK_XN},
+   {"XBL_DT",              0x81A00000, 0x00040000, AddMem, MEM_RES, SYS_MEM_CAP, Reserv, WRITE_BACK_XN},
+   {"XBL_Ramdump",         0x81A40000, 0x001C0000, AddMem, MEM_RES, UNCACHEABLE, Reserv, UNCACHED_UNBUFFERED_XN},
+   {"AOP",                 0x81C00000, 0x000A0000, AddMem, MEM_RES, UNCACHEABLE, Reserv, UNCACHED_UNBUFFERED_XN},
++  {"TME",                   0x81CA0000, 0x00044000, AddMem, MEM_RES, UNCACHEABLE, Reserv, UNCACHED_UNBUFFERED_XN},
+   {"UEFI_Log",            0x81CE4000, 0x00010000, AddMem, MEM_RES, UNCACHEABLE, Reserv, UNCACHED_UNBUFFERED_XN},
++  {"Chip_Info",           0x81CF4000, 0x0000C000, AddMem, MEM_RES, UNCACHEABLE, Reserv, UNCACHED_UNBUFFERED_XN},
+   {"SMEM",                0x81D00000, 0x00200000, AddMem, MEM_RES, UNCACHEABLE, Reserv, UNCACHED_UNBUFFERED_XN},
++  {"PDP_NS",                0x81F00000, 0x00100000, AddMem, MEM_RES, UNCACHEABLE, Reserv, NS_DEVICE},
++  {"FW_Reserved_Low",       0x82000000, 0x004A0000, AddMem, SYS_MEM, SYS_MEM_CAP, Reserv, WRITE_BACK_XN},
+   {"PvmFw",               0x824A0000, 0x00100000, AddMem, SYS_MEM, SYS_MEM_CAP, Reserv, WRITE_BACK_XN},
++  {"TZ_Global_Sync",        0x825A0000, 0x00260000, AddMem, MEM_RES, UNCACHEABLE, Reserv, UNCACHED_UNBUFFERED_XN},
++  {"QDSS",                  0x82800000, 0x02000000, AddMem, MEM_RES, UNCACHEABLE, Reserv, UNCACHED_UNBUFFERED_XN},
++  {"QLink_Logging",         0x84800000, 0x00200000, AddMem, MEM_RES, UNCACHEABLE, Reserv, UNCACHED_UNBUFFERED_XN},
++  {"DSM",                   0x84A00000, 0x07200000, AddMem, SYS_MEM, SYS_MEM_CAP, Reserv, WRITE_BACK_XN},
+   {"PIL_Reserved",        0x8BC00000, 0x17580000, AddMem, MEM_RES, UNCACHEABLE, Reserv, UNCACHED_UNBUFFERED_XN},
+   {"DBI_Dump",            0xA6100000, 0x00F00000, NoHob,  MMAP_IO, INITIALIZED, Conv,   UNCACHED_UNBUFFERED_XN},
+   {"FD_Reserved",         0xA7000000, 0x00100000, AddMem, SYS_MEM, SYS_MEM_CAP, BsData, WRITE_BACK},
+@@ -28,8 +37,13 @@ gMemoryDescriptor[] = {
+   {"UEFI_RESV",           0xA7ED9000, 0x00127000, AddMem, SYS_MEM, SYS_MEM_CAP, BsData, WRITE_BACK_XN},
+   {"Kernel",              0xA8000000, 0x10000000, AddMem, SYS_MEM, SYS_MEM_CAP, Reserv, WRITE_BACK_XN},
+   {"DXE_Heap",            0xB8000000, 0x1BA00000, AddMem, SYS_MEM, SYS_MEM_CAP, Conv,   WRITE_BACK_XN},
+-  {"Display_Reserved",    0xD5100000, 0x02B00000, AddMem, MEM_RES, SYS_MEM_CAP, Reserv, WRITE_THROUGH_XN},
+-  {"TZApps_Reserved",     0xD8800000, 0x1B000000, AddMem, MEM_RES, UNCACHEABLE, Reserv, UNCACHED_UNBUFFERED_XN},
++  {"HW_Fence",              0xD4E23000, 0x002DD000, AddMem, MEM_RES, UNCACHEABLE, Reserv, UNCACHED_UNBUFFERED_XN},
++  {"Display_Reserved",    0xD5100000, 0x02B00000, AddMem, MEM_RES, UNCACHEABLE, Reserv, UNCACHED_UNBUFFERED_XN},
++  {"TZ_Merged",             0xD8000000, 0x00800000, AddMem, MEM_RES, UNCACHEABLE, Reserv, UNCACHED_UNBUFFERED_XN},
++  {"TZApps_Reserved",     0xD8800000, 0x093B0000, AddMem, MEM_RES, UNCACHEABLE, Reserv, UNCACHED_UNBUFFERED_XN},
++  {"Trust_UI_VM",         0xF3800000, 0x04400000, AddMem, SYS_MEM, SYS_MEM_CAP, Reserv, WRITE_BACK_XN},
++  {"Guest_VM",            0xF7C00000, 0x04C00000, AddMem, SYS_MEM, SYS_MEM_CAP, Reserv, WRITE_BACK_XN},
++  {"LLCC_LPI",            0xFF800000, 0x00800000, AddMem, SYS_MEM, SYS_MEM_CAP, Reserv, WRITE_BACK_XN},
+ 
+   // Other Memory Regions
+   {"IMEM_Base",           0x14680000, 0x0002A000, NoHob,  MMAP_IO, INITIALIZED, Conv,   NS_DEVICE},
+@@ -40,6 +54,7 @@ gMemoryDescriptor[] = {
+   {"SECURITY_CONTROL",    0x00780000, 0x00007000, AddDev, MMAP_IO, UNCACHEABLE, MmIO,   NS_DEVICE},
+   {"QUP",                 0x00800000, 0x00300000, AddDev, MMAP_IO, UNCACHEABLE, MmIO,   NS_DEVICE},
+   {"PRNG_CFG_PRNG",       0x010C0000, 0x0000C000, AddDev, MMAP_IO, UNCACHEABLE, MmIO,   NS_DEVICE},
++  {"UFS_UFS_REGS",        0x01D80000, 0x00030000, AddDev, MMAP_IO, UNCACHEABLE, MmIO,    NS_DEVICE},
+   {"CRYPTO0_CRYPTO",      0x01DC0000, 0x00040000, AddDev, MMAP_IO, UNCACHEABLE, MmIO,   NS_DEVICE},
+   {"CLK_TCSR_TCSR_REGS",  0x01F00000, 0x00100000, AddDev, MMAP_IO, UNCACHEABLE, MmIO,   NS_DEVICE},
+   {"PERIPH_SS",           0x08800000, 0x00100000, AddDev, MMAP_IO, UNCACHEABLE, MmIO,   NS_DEVICE},
+diff --git a/Platforms/OnePlus/giuliaPkg/giulia.dsc b/Platforms/OnePlus/giuliaPkg/giulia.dsc
+index e3ce375c..89f95cd5 100755
+--- a/Platforms/OnePlus/giuliaPkg/giulia.dsc
++++ b/Platforms/OnePlus/giuliaPkg/giulia.dsc
+@@ -91,4 +91,7 @@
+   #
+   # ACPI Tables
+   #
+-  #giulia/AcpiTables.inf
++  giulia/AcpiTables.inf
++
++[PcdsFixedAtBuild.common]
++  gEfiMdeModulePkgTokenSpaceGuid.PcdAcpiTableStorageFile|{ 0x63, 0x1e, 0x1c, 0x5c, 0x3f, 0x4b, 0x23, 0x4f, 0x9d, 0xba, 0x7a, 0x4a, 0x1b, 0x0f, 0x4d, 0x2a }
+diff --git a/Platforms/OnePlus/giuliaPkg/giulia.fdf b/Platforms/OnePlus/giuliaPkg/giulia.fdf
+index ecafdb70..d08a7f8e 100644
+--- a/Platforms/OnePlus/giuliaPkg/giulia.fdf
++++ b/Platforms/OnePlus/giuliaPkg/giulia.fdf
+@@ -93,9 +93,9 @@ READ_LOCK_STATUS   = TRUE
+   INF SiliciumPkg/Drivers/SmBiosTableDxe/SmBiosTableDxe.inf
+ 
+   # ACPI
+-  #INF MdeModulePkg/Universal/Acpi/AcpiTableDxe/AcpiTableDxe.inf
+-  #INF MdeModulePkg/Universal/Acpi/AcpiPlatformDxe/AcpiPlatformDxe.inf
+-  #INF RuleOverride = ACPITABLE giulia/AcpiTables.inf
++  INF MdeModulePkg/Universal/Acpi/AcpiTableDxe/AcpiTableDxe.inf
++  INF MdeModulePkg/Universal/Acpi/AcpiPlatformDxe/AcpiPlatformDxe.inf
++  INF RuleOverride = ACPITABLE giulia/AcpiTables.inf
+ 
+   # IORT DT
+   INF QcomPkg/Drivers/IortDtDxe/IortDtDxe.inf
+diff --git a/Silicon/Qualcomm/LanaiPkg/LanaiPkg.dsc.inc b/Silicon/Qualcomm/LanaiPkg/LanaiPkg.dsc.inc
+index d8e888ee..e1e8c46d 100644
+--- a/Silicon/Qualcomm/LanaiPkg/LanaiPkg.dsc.inc
++++ b/Silicon/Qualcomm/LanaiPkg/LanaiPkg.dsc.inc
+@@ -19,7 +19,7 @@
+   #
+   HAS_ACTLR_EL1_UNIMPLEMENTED_ERRATA         = 1
+   HAS_AMCNTENSET0_EL0_UNIMPLEMENTED_ERRATA   = 1
+-  HAS_GIC_V3_WITHOUT_IRM_FLAG_SUPPORT_ERRATA = 1
++  HAS_GIC_V3_WITHOUT_IRM_FLAG_SUPPORT_ERRATA = 0
+   HAS_PSCI_MEMPROTECT_FAILING_ERRATA         = 0
+ 
+ !include QcomPkg/QcomPkg.dsc.inc
+diff --git a/Silicon/Qualcomm/QcomPkg/Library/ErrataPatchesLib/ErrataPatchesLib.c b/Silicon/Qualcomm/QcomPkg/Library/ErrataPatchesLib/ErrataPatchesLib.c
+index 135bf33e..3e64dc54 100644
+--- a/Silicon/Qualcomm/QcomPkg/Library/ErrataPatchesLib/ErrataPatchesLib.c
++++ b/Silicon/Qualcomm/QcomPkg/Library/ErrataPatchesLib/ErrataPatchesLib.c
+@@ -1,43 +1,139 @@
+-/**
+-  Copyright (c) 2022-2023 DuoWoA authors
+-  Copyright (c) 2026 Project Silicium
+-
+-  SPDX-License-Identifier: MIT
+-**/
+-
+ #include <Library/DebugLib.h>
+ #include <Library/ErrataPatchesLib.h>
+ #include <Library/CacheMaintenanceLib.h>
+ #include <Library/AssemblyUtilsLib.h>
+-
++#include <IndustryStandard/PeImage.h>
+ #include "ShellCode.h"
+ 
+-#if HAS_ACTLR_EL1_UNIMPLEMENTED_ERRATA == 1
+-VOID
+-ApplyReadActlrEl1Patch (
++#if HAS_GIC_V3_WITHOUT_IRM_FLAG_SUPPORT_ERRATA == 1
++STATIC
++EFI_PHYSICAL_ADDRESS
++FindExecutableSlack (
+   IN EFI_PHYSICAL_ADDRESS Base,
+-  IN UINTN                Length)
++  IN UINTN                Length,
++  IN EFI_PHYSICAL_ADDRESS InstrAddr,
++  IN UINTN                NeededBytes)
+ {
+-  // Go thru Winload Memory
+-  for (EFI_PHYSICAL_ADDRESS Current = Base; Current < Base + Length; Current += ARM64_INSTRUCTION_LENGTH) {
+-    // Get Current Instruction
+-    UINT32 Instruction = ARM64_INSTRUCTION (Current);
++  if (Base == 0 || Length < 0x1000) {
++    return 0;
++  }
++
++  EFI_IMAGE_DOS_HEADER *Dos = (EFI_IMAGE_DOS_HEADER *)Base;
++  if (Dos->e_magic != EFI_IMAGE_DOS_SIGNATURE ||
++      Dos->e_lfanew <= 0 || (UINTN)Dos->e_lfanew >= Length - sizeof (EFI_IMAGE_NT_HEADERS64)) {
++    return 0;
++  }
++
++  EFI_IMAGE_NT_HEADERS64 *Nt = (EFI_IMAGE_NT_HEADERS64 *)(Base + Dos->e_lfanew);
++  if (Nt->Signature != EFI_IMAGE_NT_SIGNATURE) {
++    return 0;
++  }
++
++  EFI_IMAGE_SECTION_HEADER *Sec = (EFI_IMAGE_SECTION_HEADER *)((UINT8 *)&Nt->OptionalHeader + Nt->FileHeader.SizeOfOptionalHeader);
++  for (UINT16 s = 0; s < Nt->FileHeader.NumberOfSections; s++) {
++    if (!(Sec[s].Characteristics & EFI_IMAGE_SCN_MEM_EXECUTE)) {
++      continue;
++    }
+ 
+-    // Verify Instruction | mrs x?, actlr_el1
+-    if ((Instruction & ~0x1F) != 0xD5381020) {
++    EFI_PHYSICAL_ADDRESS SecBase = Base + Sec[s].VirtualAddress;
++    UINTN                SecVSize = Sec[s].Misc.VirtualSize;
++    EFI_PHYSICAL_ADDRESS SecEnd   = SecBase + SecVSize;
++
++    if (InstrAddr < SecBase || InstrAddr >= SecEnd) {
+       continue;
+     }
+ 
+-    // Replace Instruction | mov x?, #0x0
+-    ARM64_INSTRUCTION (Current) = 0xD2800000 | (Instruction & 0x1F);
++    UINT32 Alignment = Nt->OptionalHeader.SectionAlignment;
++    if (Alignment == 0) {
++      Alignment = 0x1000;
++    }
+ 
+-    // Flush Cache
+-    WriteBackInvalidateDataCacheRange ((VOID *)Current, ARM64_INSTRUCTION_LENGTH);
+-    InvalidateInstructionCacheRange   ((VOID *)Current, ARM64_INSTRUCTION_LENGTH);
++    EFI_PHYSICAL_ADDRESS PadStart = (SecEnd + 0xF) & ~0xFULL;
++    EFI_PHYSICAL_ADDRESS SecLimit = SecBase + ((SecVSize + Alignment - 1) & ~(Alignment - 1));
+ 
+-    // Show Progress
+-    DEBUG ((EFI_D_WARN, "[KEP] Patched ACTLR_EL1 Instruction at 0x%p\n", Current));
++    for (EFI_PHYSICAL_ADDRESS Scan = PadStart; Scan + NeededBytes <= SecLimit && Scan + NeededBytes <= Base + Length; Scan += ARM64_INSTRUCTION_LENGTH) {
++      BOOLEAN AllZero = TRUE;
++      for (UINTN off = 0; off < NeededBytes; off += ARM64_INSTRUCTION_LENGTH) {
++        if (ARM64_INSTRUCTION (Scan + off) != 0) {
++          AllZero = FALSE;
++          break;
++        }
++      }
++      if (AllZero) {
++        INT64 Delta = (INT64)Scan - (INT64)InstrAddr;
++        if (Delta >= -0x08000000LL && Delta < 0x08000000LL) {
++          return Scan;
++        }
++      }
++    }
+   }
++
++  return 0;
++}
++
++STATIC
++BOOLEAN
++PatchGicIrmInstruction (
++  IN EFI_PHYSICAL_ADDRESS Base,
++  IN UINTN                Length,
++  IN EFI_PHYSICAL_ADDRESS InstrAddr,
++  IN UINT32               Rt)
++{
++  CONST UINTN StubWords = 27;
++  EFI_PHYSICAL_ADDRESS Cave = FindExecutableSlack (Base, Length, InstrAddr, StubWords * ARM64_INSTRUCTION_LENGTH);
++  if (Cave == 0) {
++    return FALSE;
++  }
++
++  INT64  BackDelta = (INT64)(InstrAddr + ARM64_INSTRUCTION_LENGTH) - (INT64)(Cave + 26 * ARM64_INSTRUCTION_LENGTH);
++  UINT32 BackBr    = 0x14000000U | (UINT32)((BackDelta / 4) & 0x03FFFFFFU);
++
++  // LR/NZCV/register-preserving GICv3 IRM broadcast SGI emulation for Aff1 = 0..7, Aff0 = 0
++  UINT32 Stub[27] = {
++    0xA9BD53F3U,                       // 00: stp  x19, x20, [sp, #-0x30]!
++    0xA9015BF5U,                       // 04: stp  x21, x22, [sp, #0x10]
++    0xD53B4213U,                       // 08: mrs  x19, nzcv
++    0xF90013F3U,                       // 0C: str  x19, [sp, #0x20]
++    0xB6400200U | Rt,                  // 10: tbz  xRt, #40, #0x50
++    0x9257F816U | (Rt << 5),           // 14: and  x22, xRt, #0xfffffeffffffffff
++    0xB24002D6U,                       // 18: orr  x22, x22, #1
++    0xD53800B5U,                       // 1C: mrs  x21, mpidr_el1
++    0xD3482EB5U,                       // 20: ubfx x21, x21, #8, #4
++    0xD2800014U,                       // 24: movz x20, #0
++    0xEB15029FU,                       // 28: cmp  x20, x21
++    0x540000A0U,                       // 2C: b.eq #0x40
++    0xD370BE93U,                       // 30: lsl  x19, x20, #16
++    0xAA160273U,                       // 34: orr  x19, x19, x22
++    0xD518CBB3U,                       // 38: msr  icc_sgi1r_el1, x19
++    0xD5033F9FU,                       // 3C: dsb  sy
++    0x91000694U,                       // 40: add  x20, x20, #1
++    0xF100229FU,                       // 44: cmp  x20, #8
++    0x54FFFF03U,                       // 48: b.lo #0x28
++    0x14000003U,                       // 4C: b    #0x58
++    0xD518CBA0U | Rt,                  // 50: msr  icc_sgi1r_el1, xRt
++    0xD5033F9FU,                       // 54: dsb  sy
++    0xF94013F3U,                       // 58: ldr  x19, [sp, #0x20]
++    0xD51B4213U,                       // 5C: msr  nzcv, x19
++    0xA9415BF5U,                       // 60: ldp  x21, x22, [sp, #0x10]
++    0xA8C353F3U,                       // 64: ldp  x19, x20, [sp], #0x30
++    BackBr                             // 68: b    (InstrAddr + 4)
++  };
++
++  for (UINTN i = 0; i < StubWords; i++) {
++    ARM64_INSTRUCTION (Cave + i * ARM64_INSTRUCTION_LENGTH) = Stub[i];
++  }
++
++  WriteBackInvalidateDataCacheRange ((VOID *)Cave, sizeof (Stub));
++  InvalidateInstructionCacheRange   ((VOID *)Cave, sizeof (Stub));
++
++  INT64  Offset = (INT64)Cave - (INT64)InstrAddr;
++  UINT32 BrIns  = 0x14000000U | (UINT32)((Offset / 4) & 0x03FFFFFFU);
++  ARM64_INSTRUCTION (InstrAddr) = BrIns;
++
++  WriteBackInvalidateDataCacheRange ((VOID *)InstrAddr, ARM64_INSTRUCTION_LENGTH);
++  InvalidateInstructionCacheRange   ((VOID *)InstrAddr, ARM64_INSTRUCTION_LENGTH);
++
++  return TRUE;
+ }
+ #endif
+ 
+@@ -46,10 +142,81 @@ ApplyPlatformErrataPatches (
+   IN EFI_PHYSICAL_ADDRESS Base,
+   IN UINTN                Length)
+ {
+-#if HAS_ACTLR_EL1_UNIMPLEMENTED_ERRATA == 1
+-  // Apply ACTLR_EL1 Errata Patch
+-  ApplyReadActlrEl1Patch (Base, Length);
++  if (Base == 0 || Length < 0x1000) {
++    return;
++  }
++
++  EFI_IMAGE_DOS_HEADER *Dos = (EFI_IMAGE_DOS_HEADER *)Base;
++  if (Dos->e_magic != EFI_IMAGE_DOS_SIGNATURE ||
++      Dos->e_lfanew <= 0 || (UINTN)Dos->e_lfanew >= Length - sizeof (EFI_IMAGE_NT_HEADERS64)) {
++    return;
++  }
++
++  EFI_IMAGE_NT_HEADERS64 *Nt = (EFI_IMAGE_NT_HEADERS64 *)(Base + Dos->e_lfanew);
++  if (Nt->Signature != EFI_IMAGE_NT_SIGNATURE) {
++    return;
++  }
++
++  UINTN DaifPatched  = 0;
++  UINTN IrmPatched   = 0;
++  UINTN TotalPatched = 0;
++
++  EFI_IMAGE_SECTION_HEADER *Sec = (EFI_IMAGE_SECTION_HEADER *)((UINT8 *)&Nt->OptionalHeader + Nt->FileHeader.SizeOfOptionalHeader);
++  for (UINT16 s = 0; s < Nt->FileHeader.NumberOfSections; s++) {
++    if (!(Sec[s].Characteristics & EFI_IMAGE_SCN_MEM_EXECUTE)) {
++      continue;
++    }
++
++    EFI_PHYSICAL_ADDRESS SecBase = Base + Sec[s].VirtualAddress;
++    UINTN                SecSize = Sec[s].Misc.VirtualSize;
++    if (SecBase < Base || SecBase >= Base + Length) {
++      continue;
++    }
++    if (SecBase + SecSize > Base + Length) {
++      SecSize = (Base + Length) - SecBase;
++    }
++
++    for (EFI_PHYSICAL_ADDRESS Current = SecBase; Current + ARM64_INSTRUCTION_LENGTH <= SecBase + SecSize; Current += ARM64_INSTRUCTION_LENGTH) {
++      UINT32 Instruction = ARM64_INSTRUCTION (Current);
++      UINT32 Masked      = Instruction & ~0x1FU;
++      UINT32 Rt          = Instruction & 0x1FU;
++      BOOLEAN Patched    = FALSE;
++
++#if HAS_GIC_V3_WITHOUT_IRM_FLAG_SUPPORT_ERRATA == 1
++      // msr icc_sgi1r_el1, xRt -> register-preserving IRM broadcast emulation
++      if (Masked == 0xD518CBA0U) {
++        if (PatchGicIrmInstruction (Base, Length, Current, Rt)) {
++          IrmPatched++;
++          continue;
++        }
++      }
+ #endif
++
++      // mrs x?, actlr_el1 | amcntenset0_el0 | amcgcr_el0 | amcntenclr0_el0 | amcntenset1_el0 | amcntenclr1_el0 | mdscr_el1 | oslsr_el1 -> mov x?, #0
++      if (Masked == 0xD5381020 || Masked == 0xD53BD2A0 || Masked == 0xD53BD240 ||
++          Masked == 0xD53BD280 || Masked == 0xD53BD320 || Masked == 0xD53BD300 ||
++          Masked == 0xD5300240 || Masked == 0xD5301180) {
++        ARM64_INSTRUCTION (Current) = 0xD2800000 | Rt;
++        Patched = TRUE;
++      }
++      // msr actlr_el1 | amcntenset0_el0 | amcntenclr0_el0 | oslar_el1 | mdscr_el1 -> NOP
++      else if (Masked == 0xD5181020 || Masked == 0xD51BD2A0 || Masked == 0xD51BD280 ||
++               Masked == 0xD5101080 || Masked == 0xD5100240) {
++        ARM64_INSTRUCTION (Current) = 0xD503201F;
++        Patched = TRUE;
++      }
++
++      if (Patched) {
++        TotalPatched++;
++        WriteBackInvalidateDataCacheRange ((VOID *)Current, ARM64_INSTRUCTION_LENGTH);
++        InvalidateInstructionCacheRange   ((VOID *)Current, ARM64_INSTRUCTION_LENGTH);
++      }
++    }
++  }
++
++  if (TotalPatched > 0 || IrmPatched > 0) {
++    DEBUG ((EFI_D_WARN, "[KEP] Patched PE 0x%p (Patches: %u, DAIFClr: %u, IRM: %u)\n", Base, (UINT32)TotalPatched, (UINT32)DaifPatched, (UINT32)IrmPatched));
++  }
+ }
+ 
+ VOID
+@@ -57,7 +224,6 @@ GetPlatformShellCode (
+   OUT UINT8 **ShellCode,
+   OUT UINTN  *ShellCodeSize)
+ {
+-  // Pass Shell Code Data
+   *ShellCode     = TransferToKernelShellCode;
+   *ShellCodeSize = sizeof (TransferToKernelShellCode);
+ }
+diff --git a/Silicon/Qualcomm/QcomPkg/Library/ErrataPatchesLib/ErrataPatchesLib.inf b/Silicon/Qualcomm/QcomPkg/Library/ErrataPatchesLib/ErrataPatchesLib.inf
+index 2da7a59d..7c2f536b 100644
+--- a/Silicon/Qualcomm/QcomPkg/Library/ErrataPatchesLib/ErrataPatchesLib.inf
++++ b/Silicon/Qualcomm/QcomPkg/Library/ErrataPatchesLib/ErrataPatchesLib.inf
+@@ -16,3 +16,5 @@
+ [LibraryClasses]
+   DebugLib
+   CacheMaintenanceLib
++  BaseLib
++  BaseMemoryLib
+diff --git a/Silicon/Silicium/SiliciumPkg/Library/KernelErrataPatcherLib/KernelErrataPatcherLib.c b/Silicon/Silicium/SiliciumPkg/Library/KernelErrataPatcherLib/KernelErrataPatcherLib.c
+index 22723413..fb5b7ce9 100644
+--- a/Silicon/Silicium/SiliciumPkg/Library/KernelErrataPatcherLib/KernelErrataPatcherLib.c
++++ b/Silicon/Silicium/SiliciumPkg/Library/KernelErrataPatcherLib/KernelErrataPatcherLib.c
+@@ -10,28 +10,222 @@
+ 
+ #include <Library/DebugLib.h>
+ #include <Library/UefiBootServicesTableLib.h>
++#include <Library/UefiRuntimeServicesTableLib.h>
++#include <Library/CacheMaintenanceLib.h>
++#include <Library/AssemblyUtilsLib.h>
+ #include <Library/ErrataPatchesLib.h>
+ #include <Library/PerformanceLib.h>
++#include <IndustryStandard/PeImage.h>
+ 
+ #include "KernelErrataPatcherLib.h"
+ 
+ //
+-// gBS Function Backups
++// Winload Memory Details
+ //
+-STATIC EFI_ALLOCATE_PAGES     mOrigAllocatePages    = NULL;
+-STATIC EFI_EXIT_BOOT_SERVICES mOrigExitBootServices = NULL;
++STATIC EFI_LOADER_RANGE mLoaderRange[MAX_LOADER_RANGES] = {0};
++STATIC UINTN            mLoaderCount                    = 0;
++STATIC EFI_PHYSICAL_ADDRESS mWinloadBase   = 0;
++STATIC UINTN                mWinloadLength = 0;
++
+ 
+ //
+-// Memory Allocation Details
++// BSOD Freeze: Intercept UEFI Runtime ResetSystem
+ //
+-STATIC EFI_LOADER_RANGE mLoaderRange[MAX_LOADER_RANGES] = {0};
+-STATIC UINT8            mLoaderCount                    = 0;
++STATIC
++VOID
++EFIAPI
++BsodFreezeResetSystem (
++  IN EFI_RESET_TYPE ResetType,
++  IN EFI_STATUS     ResetStatus,
++  IN UINTN          DataSize,
++  IN VOID          *ResetData OPTIONAL)
++{
++  DEBUG ((EFI_D_WARN, "[KEP] Intercepted gRT->ResetSystem (Type %u) -> Freezing on BSOD!\n", (UINT32)ResetType));
++  while (TRUE) {
++    // Spin forever on BSOD
++  }
++}
+ 
+ //
+-// Winload Memory Details
++// BSOD Freeze: Hook ArmSmc across all loader ranges
+ //
+-STATIC EFI_PHYSICAL_ADDRESS mWinloadBase   = 0;
+-STATIC UINTN                mWinloadLength = 0;
++STATIC
++VOID
++HookArmSmcForBsod (VOID)
++{
++  EFI_PHYSICAL_ADDRESS SmcFunc = 0;
++
++  // 1. Locate ArmSmc (smc #0; ret) across all loader ranges
++  for (UINTN i = 0; i < mLoaderCount && SmcFunc == 0; i++) {
++    EFI_PHYSICAL_ADDRESS RBase = mLoaderRange[i].Base;
++    UINTN                RLen  = mLoaderRange[i].Length;
++
++    if (RBase == 0 || RLen < 8) {
++      continue;
++    }
++
++    for (EFI_PHYSICAL_ADDRESS Cur = RBase; Cur + 8 <= RBase + RLen; Cur += ARM64_INSTRUCTION_LENGTH) {
++      if (ARM64_INSTRUCTION (Cur) == 0xD4000003U &&
++          ARM64_INSTRUCTION (Cur + 4) == 0xD65F03C0U) {
++        SmcFunc = Cur;
++        DEBUG ((EFI_D_WARN, "[KEP] Found ArmSmc at 0x%p in range [0x%p, 0x%llx]\n",
++                SmcFunc, RBase, (UINT64)RLen));
++        break;
++      }
++    }
++  }
++
++  if (SmcFunc == 0) {
++    DEBUG ((EFI_D_ERROR, "[KEP] WARNING: ArmSmc NOT found in any loader range!\n"));
++    return;
++  }
++
++  // 2. Locate 68 bytes of zero slack space INSIDE THE EXECUTABLE CODE SECTION containing SmcFunc
++  EFI_PHYSICAL_ADDRESS SlackAddr = 0;
++
++  for (UINTN i = 0; i < mLoaderCount && SlackAddr == 0; i++) {
++    EFI_PHYSICAL_ADDRESS RBase = mLoaderRange[i].Base;
++    UINTN                RLen  = mLoaderRange[i].Length;
++
++    if (RBase == 0 || RLen < 0x1000) {
++      continue;
++    }
++
++    // Must be the image that contains SmcFunc
++    if (SmcFunc < RBase || SmcFunc >= RBase + RLen) {
++      continue;
++    }
++
++    EFI_IMAGE_DOS_HEADER *Dos = (EFI_IMAGE_DOS_HEADER *)RBase;
++    if (Dos->e_magic != EFI_IMAGE_DOS_SIGNATURE ||
++        Dos->e_lfanew <= 0 || (UINTN)Dos->e_lfanew >= RLen - sizeof (EFI_IMAGE_NT_HEADERS64)) {
++      continue;
++    }
++
++    EFI_IMAGE_NT_HEADERS64 *Nt = (EFI_IMAGE_NT_HEADERS64 *)(RBase + Dos->e_lfanew);
++    if (Nt->Signature != EFI_IMAGE_NT_SIGNATURE) {
++      continue;
++    }
++
++    EFI_IMAGE_SECTION_HEADER *Sec = (EFI_IMAGE_SECTION_HEADER *)((UINT8 *)&Nt->OptionalHeader + Nt->FileHeader.SizeOfOptionalHeader);
++    for (UINT16 s = 0; s < Nt->FileHeader.NumberOfSections; s++) {
++      if (!(Sec[s].Characteristics & EFI_IMAGE_SCN_MEM_EXECUTE)) {
++        continue;
++      }
++
++      EFI_PHYSICAL_ADDRESS SecBase = RBase + Sec[s].VirtualAddress;
++      UINTN SecVSize               = Sec[s].Misc.VirtualSize;
++      EFI_PHYSICAL_ADDRESS SecEnd  = SecBase + SecVSize;
++
++      // Check if SmcFunc belongs to this executable section
++      if (SmcFunc >= SecBase && SmcFunc < SecEnd) {
++        UINT32 Alignment = Nt->OptionalHeader.SectionAlignment;
++        if (Alignment == 0) {
++          Alignment = 0x1000;
++        }
++
++        EFI_PHYSICAL_ADDRESS PadStart = (SecEnd + 0xF) & ~0xFULL;
++        EFI_PHYSICAL_ADDRESS SecLimit = SecBase + ((SecVSize + Alignment - 1) & ~(Alignment - 1));
++
++        DEBUG ((EFI_D_WARN, "[KEP] Executable section: [0x%p - 0x%p], PadStart=0x%p, SecLimit=0x%p\n",
++                SecBase, SecEnd, PadStart, SecLimit));
++
++        // Search in section padding first (end of virtual size to section alignment)
++        for (EFI_PHYSICAL_ADDRESS Scan = PadStart; Scan + 68 <= SecLimit && Scan + 68 <= RBase + RLen; Scan += ARM64_INSTRUCTION_LENGTH) {
++          BOOLEAN AllZero = TRUE;
++          for (UINTN off = 0; off < 68; off += ARM64_INSTRUCTION_LENGTH) {
++            if (ARM64_INSTRUCTION (Scan + off) != 0) {
++              AllZero = FALSE;
++              break;
++            }
++          }
++          if (AllZero) {
++            SlackAddr = Scan;
++            DEBUG ((EFI_D_WARN, "[KEP] Found Slack in section alignment padding at 0x%p\n", SlackAddr));
++            break;
++          }
++        }
++
++        // If not in padding, search forward from SmcFunc + 16 inside the executable section
++        if (SlackAddr == 0) {
++          for (EFI_PHYSICAL_ADDRESS Scan = SmcFunc + 16; Scan + 68 <= SecEnd; Scan += ARM64_INSTRUCTION_LENGTH) {
++            BOOLEAN AllZero = TRUE;
++            for (UINTN off = 0; off < 68; off += ARM64_INSTRUCTION_LENGTH) {
++              if (ARM64_INSTRUCTION (Scan + off) != 0) {
++                AllZero = FALSE;
++                break;
++              }
++            }
++            if (AllZero) {
++              SlackAddr = Scan;
++              DEBUG ((EFI_D_WARN, "[KEP] Found Slack inside executable section at 0x%p\n", SlackAddr));
++              break;
++            }
++          }
++        }
++
++        break;
++      }
++    }
++  }
++
++  if (SlackAddr == 0) {
++    DEBUG ((EFI_D_ERROR, "[KEP] ERROR: Could not find 68-byte zero slack in executable section!\n"));
++    return;
++  }
++
++  DEBUG ((EFI_D_WARN, "[KEP] Selected Slack at 0x%p (delta %lld bytes)\n",
++          SlackAddr, (INT64)SlackAddr - (INT64)SmcFunc));
++
++  // 3. Write trampoline into SlackAddr
++  // Filter exact reset/shutdown calls, execute normal SMC for all other PSCI calls
++  CONST UINT32 Trampoline[] = {
++    0x52800130U, // mov   w16, #0x9
++    0x72B08010U, // movk  w16, #0x8400, lsl #16  (0x84000009 SYSTEM_RESET)
++    0x6B10001FU, // cmp   w0, w16
++    0x540001A0U, // b.eq  .Lfreeze
++    0x51000610U, // sub   w16, w16, #0x1         (0x84000008 SYSTEM_OFF)
++    0x6B10001FU, // cmp   w0, w16
++    0x54000140U, // b.eq  .Lfreeze
++    // PSCI_FEATURES (0x8400000A) must reach firmware. Keep branch offsets unchanged.
++    0xD503201FU, // nop
++    0xD503201FU, // nop
++    0xD503201FU, // nop
++    0x52800250U, // mov   w16, #0x12
++    0x72B88010U, // movk  w16, #0xC400, lsl #16  (0xC4000012 SYSTEM_RESET2_64)
++    0x6B10001FU, // cmp   w0, w16
++    0x54000060U, // b.eq  .Lfreeze
++    0xD4000003U, // smc   #0x0                   (Normal SMC execution)
++    0xD65F03C0U, // ret                          (Return to caller)
++    0x14000000U  // .Lfreeze: b .                (Freeze on BSOD!)
++  };
++
++  for (UINTN w = 0; w < ARRAY_SIZE (Trampoline); w++) {
++    ARM64_INSTRUCTION (SlackAddr + w * ARM64_INSTRUCTION_LENGTH) = Trampoline[w];
++  }
++
++  WriteBackInvalidateDataCacheRange ((VOID *)SlackAddr, sizeof (Trampoline));
++  InvalidateInstructionCacheRange   ((VOID *)SlackAddr, sizeof (Trampoline));
++
++  // 4. Hook SmcFunc: unconditional branch 'b SlackAddr' (opcode 0x14000000 | (imm26 & 0x03FFFFFF))
++  INT64  Offset    = (INT64)SlackAddr - (INT64)SmcFunc;
++  UINT32 BranchImm = (UINT32)((Offset / 4) & 0x03FFFFFFU);
++  UINT32 BranchIns = 0x14000000U | BranchImm;
++
++  ARM64_INSTRUCTION (SmcFunc) = BranchIns;
++  WriteBackInvalidateDataCacheRange ((VOID *)SmcFunc, ARM64_INSTRUCTION_LENGTH);
++  InvalidateInstructionCacheRange   ((VOID *)SmcFunc, ARM64_INSTRUCTION_LENGTH);
++
++  DEBUG ((EFI_D_WARN, "[KEP] SUCCESS: Hooked ArmSmc at 0x%p -> Trampoline at 0x%p (B 0x%08X)\n",
++          SmcFunc, SlackAddr, BranchIns));
++}
++
++//
++// gBS Function Backups
++//
++STATIC EFI_ALLOCATE_PAGES     mOrigAllocatePages    = NULL;
++STATIC EFI_EXIT_BOOT_SERVICES mOrigExitBootServices = NULL;
++
+ 
+ EFI_STATUS
+ EFIAPI
+@@ -43,58 +237,35 @@ KepAllocatePagesHook (
+ {
+   EFI_STATUS Status;
+ 
++  // Intercept requests for addresses below DDR base (0x80000000)
++  if ((Type == AllocateAddress || Type == AllocateMaxAddress) && Memory != NULL && *Memory < 0x80000000) {
++    DEBUG ((EFI_D_INFO, "[KEP] Intercepted AllocatePages < 0x80000000 (Type %u, Addr 0x%llx, Pages: %lu) -> EFI_NOT_FOUND\n", Type, (UINT64)*Memory, (UINT64)Pages));
++    return EFI_NOT_FOUND;
++  }
++
+   // Allocate Specified Pages
+   Status = mOrigAllocatePages (Type, MemoryType, Pages, Memory);
+   if (EFI_ERROR (Status)) {
+     return Status;
+   }
+ 
+-  // Save Memory Allocation
+-  if (MemoryType == EfiLoaderCode && mLoaderCount < MAX_LOADER_RANGES) {
+-    mLoaderRange[mLoaderCount].Base   = (EFI_PHYSICAL_ADDRESS)(*Memory);
+-    mLoaderRange[mLoaderCount].Length = EFI_PAGES_TO_SIZE (Pages);
+-    mLoaderCount++;
+-  }
+-
+-  // Go thru Saved Memory Allocations
+-  for (UINT8 i = 0; i < mLoaderCount; i++) {
+-    // Check for Winload Memory
+-    if (IsWinloadMemory (mLoaderRange[i].Base, mLoaderRange[i].Length)) {
+-      mWinloadBase   = mLoaderRange[i].Base;
+-      mWinloadLength = mLoaderRange[i].Length;
+-      break;
++  // Save Code Allocations for post-load patching at ExitBootServices
++  if ((MemoryType == EfiLoaderCode || MemoryType == EfiBootServicesCode || MemoryType == EfiLoaderData || MemoryType == EfiBootServicesData) &&
++      Memory != NULL && *Memory != 0 && Pages > 0) {
++    BOOLEAN AlreadyExists = FALSE;
++    for (UINTN i = 0; i < mLoaderCount; i++) {
++      if (mLoaderRange[i].Base == *Memory) {
++        AlreadyExists = TRUE;
++        break;
++      }
++    }
++    if (!AlreadyExists && mLoaderCount < MAX_LOADER_RANGES) {
++      mLoaderRange[mLoaderCount].Base   = *Memory;
++      mLoaderRange[mLoaderCount].Length = EFI_PAGES_TO_SIZE (Pages);
++      mLoaderCount++;
+     }
+   }
+ 
+-  // Verify Winload Base
+-  if (!mWinloadBase) {
+-    return EFI_SUCCESS;
+-  }
+-
+-  // Unprotect Winload Memory
+-  Status = SetWinloadProtection (mWinloadBase, mWinloadLength, FALSE);
+-  if (EFI_ERROR (Status)) {
+-    DEBUG ((EFI_D_ERROR, "[KEP] Failed to Unprotect Winload Memory! Status = %r\n", Status));
+-    goto restore;
+-  }
+-
+-  // Apply Platform Specific Patches
+-  ApplyPlatformErrataPatches (mWinloadBase, mWinloadLength);
+-
+-  // Reprotect Winload Memory
+-  Status = SetWinloadProtection (mWinloadBase, mWinloadLength, TRUE);
+-  if (EFI_ERROR (Status)) {
+-    DEBUG ((EFI_D_ERROR, "[KEP] Failed to Reprotect Winload Memory! Status = %r\n", Status));
+-  }
+-
+-restore:
+-  // Restore Original "AllocatePages"
+-  gBS->AllocatePages = mOrigAllocatePages;
+-
+-  // Calculate new CRC32
+-  gBS->Hdr.CRC32 = 0;
+-  gBS->CalculateCrc32 (gBS, sizeof (EFI_BOOT_SERVICES), &gBS->Hdr.CRC32);
+-
+   return EFI_SUCCESS;
+ }
+ 
+@@ -108,37 +279,54 @@ KepExitBootServicesHook (
+   UINT8      *ShellCode;
+   UINTN       ShellCodeSize;
+ 
+-  // Restore Original EBS
+-  gBS->ExitBootServices = mOrigExitBootServices;
+-  gBS->Hdr.CRC32        = 0;
++  DEBUG ((EFI_D_WARN, "[KEP] KepExitBootServicesHook: Scanning %u loader ranges...\n", (UINT32)mLoaderCount));
+ 
+-  // Calculate new CRC32
+-  gBS->CalculateCrc32 (gBS, sizeof (EFI_BOOT_SERVICES), &gBS->Hdr.CRC32);
++  // Now that all modules are loaded into memory, apply errata patches and locate winload.efi
++  for (UINTN i = 0; i < mLoaderCount; i++) {
++    EFI_PHYSICAL_ADDRESS RangeBase   = mLoaderRange[i].Base;
++    UINTN                RangeLength = mLoaderRange[i].Length;
+ 
+-  // Unprotect Winload Memory
+-  Status = SetWinloadProtection (mWinloadBase, mWinloadLength, FALSE);
+-  if (EFI_ERROR (Status)) {
+-    DEBUG ((EFI_D_ERROR, "[KEP] Failed to Unprotect Winload Memory! Status = %r\n", Status));
+-    goto exit;
+-  }
++    if (RangeBase == 0 || RangeLength == 0) {
++      continue;
++    }
++
++    SetWinloadProtection (RangeBase, RangeLength, FALSE);
++
++    ApplyPlatformErrataPatches (RangeBase, RangeLength);
+ 
+-  // Get Platform Shell Code
+-  GetPlatformShellCode (&ShellCode, &ShellCodeSize);
++    if (!mWinloadBase && IsWinloadMemory (RangeBase, RangeLength)) {
++      mWinloadBase   = RangeBase;
++      mWinloadLength = RangeLength;
++      DEBUG ((EFI_D_WARN, "[KEP] Found Winload at 0x%p (Size 0x%llx)\n", mWinloadBase, (UINT64)mWinloadLength));
++    }
+ 
+-  // Verify Platform Shell Code
+-  if (ShellCode != NULL && ShellCodeSize != 0) {
+-    // Patch Transfer to Kernel
+-    PatchTransferToKernel (mWinloadBase, mWinloadLength, ShellCode, ShellCodeSize);
+   }
+ 
+-  // Reprotect Winload Memory
+-  Status = SetWinloadProtection (mWinloadBase, mWinloadLength, TRUE);
+-  if (EFI_ERROR (Status)) {
+-    DEBUG ((EFI_D_ERROR, "[KEP] Failed to Reprotect Winload Memory! Status = %r\n", Status));
++  // Hook ArmSmc across all loader ranges to freeze permanently on BSOD
++  HookArmSmcForBsod ();
++
++  // Intercept UEFI Runtime ResetSystem to prevent rebooting on firmware return
++  gRT->ResetSystem = BsodFreezeResetSystem;
++  gRT->Hdr.CRC32   = 0;
++  gBS->CalculateCrc32 (gRT, sizeof (EFI_RUNTIME_SERVICES), &gRT->Hdr.CRC32);
++
++  (VOID)ShellCode;
++  (VOID)ShellCodeSize;
++  (VOID)Status;
++  if (mWinloadBase != 0 && mWinloadLength != 0) {
++    DEBUG ((EFI_D_WARN, "[KEP] Direct PE errata patches applied; skipping legacy winload shellcode injection\n"));
++  } else {
++    DEBUG ((EFI_D_ERROR, "[KEP] WARNING: Winload NOT detected among %u ranges!\n", (UINT32)mLoaderCount));
+   }
+ 
+-exit:
+-  // Call Original EBS
++  // Restore Original Boot Services
++  if (mOrigAllocatePages != NULL) {
++    gBS->AllocatePages = mOrigAllocatePages;
++  }
++  gBS->ExitBootServices = mOrigExitBootServices;
++  gBS->Hdr.CRC32        = 0;
++  gBS->CalculateCrc32 (gBS, sizeof (EFI_BOOT_SERVICES), &gBS->Hdr.CRC32);
++
+   return gBS->ExitBootServices (ImageHandle, MapKey);
+ }
+ 
+@@ -148,13 +336,15 @@ ReadyToBootHandler (
+   IN EFI_EVENT  Event,
+   IN VOID      *Context)
+ {
+-  // Save Original gBS Functions
+-  mOrigExitBootServices = gBS->ExitBootServices;
+-  mOrigAllocatePages    = gBS->AllocatePages;
++  if (gBS->AllocatePages != KepAllocatePagesHook) {
++    mOrigAllocatePages = gBS->AllocatePages;
++    gBS->AllocatePages = KepAllocatePagesHook;
++  }
+ 
+-  // Hook into gBS
+-  gBS->AllocatePages    = KepAllocatePagesHook;
+-  gBS->ExitBootServices = KepExitBootServicesHook;
++  if (gBS->ExitBootServices != KepExitBootServicesHook) {
++    mOrigExitBootServices = gBS->ExitBootServices;
++    gBS->ExitBootServices = KepExitBootServicesHook;
++  }
+ 
+   // Calculate new CRC32
+   gBS->Hdr.CRC32 = 0;
+@@ -173,6 +363,21 @@ KernelErrataPatcherLibConstructor (
+   EFI_STATUS Status;
+   EFI_EVENT  ReadyToBootEvent;
+ 
++  if (gBS != NULL) {
++    if (gBS->AllocatePages != NULL && gBS->AllocatePages != KepAllocatePagesHook) {
++      mOrigAllocatePages = gBS->AllocatePages;
++      gBS->AllocatePages = KepAllocatePagesHook;
++    }
++
++    if (gBS->ExitBootServices != NULL && gBS->ExitBootServices != KepExitBootServicesHook) {
++      mOrigExitBootServices = gBS->ExitBootServices;
++      gBS->ExitBootServices = KepExitBootServicesHook;
++    }
++
++    gBS->Hdr.CRC32 = 0;
++    gBS->CalculateCrc32 (gBS, sizeof (EFI_BOOT_SERVICES), &gBS->Hdr.CRC32);
++  }
++
+   // Create Ready To Boot Event
+   Status = gBS->CreateEventEx (EVT_NOTIFY_SIGNAL, TPL_CALLBACK, ReadyToBootHandler, NULL, &gEfiEventReadyToBootGuid, &ReadyToBootEvent);
+   if (EFI_ERROR (Status)) {
+diff --git a/Silicon/Silicium/SiliciumPkg/Library/KernelErrataPatcherLib/KernelErrataPatcherLib.h b/Silicon/Silicium/SiliciumPkg/Library/KernelErrataPatcherLib/KernelErrataPatcherLib.h
+index 8e87739a..d4e21d77 100644
+--- a/Silicon/Silicium/SiliciumPkg/Library/KernelErrataPatcherLib/KernelErrataPatcherLib.h
++++ b/Silicon/Silicium/SiliciumPkg/Library/KernelErrataPatcherLib/KernelErrataPatcherLib.h
+@@ -14,7 +14,7 @@
+ //
+ // Save Limits
+ //
+-#define MAX_LOADER_RANGES 64
++#define MAX_LOADER_RANGES 2048
+ 
+ //
+ // Memory Area Structure
+diff --git a/Silicon/Silicium/SiliciumPkg/Library/KernelErrataPatcherLib/KernelErrataPatcherLib.inf b/Silicon/Silicium/SiliciumPkg/Library/KernelErrataPatcherLib/KernelErrataPatcherLib.inf
+index 4492e16a..93cdac2d 100644
+--- a/Silicon/Silicium/SiliciumPkg/Library/KernelErrataPatcherLib/KernelErrataPatcherLib.inf
++++ b/Silicon/Silicium/SiliciumPkg/Library/KernelErrataPatcherLib/KernelErrataPatcherLib.inf
+@@ -26,6 +26,7 @@
+ [LibraryClasses]
+   DebugLib
+   UefiBootServicesTableLib
++  UefiRuntimeServicesTableLib
+   CacheMaintenanceLib
+   ErrataPatchesLib
+   PerformanceLib
+diff --git a/Silicon/Silicium/SiliciumPkg/Library/KernelErrataPatcherLib/Winload.c b/Silicon/Silicium/SiliciumPkg/Library/KernelErrataPatcherLib/Winload.c
+index 70bc7ab9..dfcc97c9 100644
+--- a/Silicon/Silicium/SiliciumPkg/Library/KernelErrataPatcherLib/Winload.c
++++ b/Silicon/Silicium/SiliciumPkg/Library/KernelErrataPatcherLib/Winload.c
+@@ -26,6 +26,10 @@ IsWinloadMemory (
+   IN EFI_PHYSICAL_ADDRESS Base,
+   IN UINTN                Length)
+ {
++  if (Base == 0 || Length < 0x2000) {
++    return FALSE;
++  }
++
+   // Populate DOS Header
+   EFI_IMAGE_DOS_HEADER *DosHeader = (EFI_IMAGE_DOS_HEADER *)Base;
+ 
+@@ -34,6 +38,11 @@ IsWinloadMemory (
+     return FALSE;
+   }
+ 
++  // Verify e_lfanew offset within bounds
++  if (DosHeader->e_lfanew <= 0 || (UINTN)DosHeader->e_lfanew >= Length - sizeof (EFI_IMAGE_NT_HEADERS64)) {
++    return FALSE;
++  }
++
+   // Populate NT Header
+   EFI_IMAGE_NT_HEADERS64 *NtHeader = (EFI_IMAGE_NT_HEADERS64 *)(Base + DosHeader->e_lfanew);
+ 
+@@ -47,11 +56,15 @@ IsWinloadMemory (
+     // Get "TransferToKernel" Function Offset
+     UINT16 TransferToKernelOffset = CodebaseSemester[i].TransferToKernelOffset;
+ 
++    if (Length <= (UINTN)TransferToKernelOffset + ARM64_TOTAL_INSTRUCTION_LENGTH (2)) {
++      continue;
++    }
++
+     // Save TransferToKernel Function Location
+     mTransferToKernelAddr = Base + TransferToKernelOffset;
+ 
+     // Go thru TransferToKernel Memory Area
+-    for (EFI_PHYSICAL_ADDRESS Current = mTransferToKernelAddr; Current < mTransferToKernelAddr + (Length - TransferToKernelOffset); Current += ARM64_INSTRUCTION_LENGTH) {
++    for (EFI_PHYSICAL_ADDRESS Current = mTransferToKernelAddr; Current < mTransferToKernelAddr + (Length - TransferToKernelOffset - ARM64_TOTAL_INSTRUCTION_LENGTH (1)); Current += ARM64_INSTRUCTION_LENGTH) {
+       // Verify Branch Instruction
+       if (ARM64_INSTRUCTION (Current) != ARM64_BRANCH_LOCATION_INSTRUCTION (Current, mTransferToKernelAddr)) {
+         continue;
+@@ -63,7 +76,7 @@ IsWinloadMemory (
+       }
+ 
+       // Show Winload Details
+-      DEBUG ((EFI_D_WARN, "[KEP] Winload Memory Range      = 0x%p - 0x%llx\n", Base, Length));
++      DEBUG ((EFI_D_WARN, "[KEP] Winload Memory Range      = 0x%p - 0x%llx\n", Base, (UINT64)Length));
+       DEBUG ((EFI_D_WARN, "[KEP] Winload Codebase Semester = %a\n", CodebaseSemester[i].Name));
+ 
+       // Save Target Patch Instruction
