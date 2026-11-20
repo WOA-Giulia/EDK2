@@ -283,518 +283,265 @@ index 2da7a59d..7c2f536b 100644
    CacheMaintenanceLib
 +  BaseLib
 +  BaseMemoryLib
-diff --git a/Silicon/Silicium/SiliciumPkg/Library/KernelErrataPatcherLib/KernelErrataPatcherLib.c b/Silicon/Silicium/SiliciumPkg/Library/KernelErrataPatcherLib/KernelErrataPatcherLib.c
-index 22723413..fb5b7ce9 100644
---- a/Silicon/Silicium/SiliciumPkg/Library/KernelErrataPatcherLib/KernelErrataPatcherLib.c
-+++ b/Silicon/Silicium/SiliciumPkg/Library/KernelErrataPatcherLib/KernelErrataPatcherLib.c
-@@ -10,28 +10,222 @@
- 
- #include <Library/DebugLib.h>
- #include <Library/UefiBootServicesTableLib.h>
-+#include <Library/UefiRuntimeServicesTableLib.h>
-+#include <Library/CacheMaintenanceLib.h>
-+#include <Library/AssemblyUtilsLib.h>
- #include <Library/ErrataPatchesLib.h>
- #include <Library/PerformanceLib.h>
-+#include <IndustryStandard/PeImage.h>
- 
- #include "KernelErrataPatcherLib.h"
- 
- //
--// gBS Function Backups
-+// Winload Memory Details
- //
--STATIC EFI_ALLOCATE_PAGES     mOrigAllocatePages    = NULL;
--STATIC EFI_EXIT_BOOT_SERVICES mOrigExitBootServices = NULL;
-+STATIC EFI_LOADER_RANGE mLoaderRange[MAX_LOADER_RANGES] = {0};
-+STATIC UINTN            mLoaderCount                    = 0;
-+STATIC EFI_PHYSICAL_ADDRESS mWinloadBase   = 0;
-+STATIC UINTN                mWinloadLength = 0;
+diff --git a/Silicon/Qualcomm/QcomPkg/Library/PlatformBootManagerLib/PlatformBootManager.c b/Silicon/Qualcomm/QcomPkg/Library/PlatformBootManagerLib/PlatformBootManager.c
+index 97c29d39..431658ab 100644
+--- a/Silicon/Qualcomm/QcomPkg/Library/PlatformBootManagerLib/PlatformBootManager.c
++++ b/Silicon/Qualcomm/QcomPkg/Library/PlatformBootManagerLib/PlatformBootManager.c
+@@ -1,93 +1,107 @@
+-#include <Library/DebugLib.h>
+-#include <Library/UefiBootServicesTableLib.h>
+-#include <Library/DeviceBootManagerLib.h>
+-#include <Library/RfsProtectionLib.h>
+-
+-STATIC
+-VOID
+-DummyNotify (
+-  IN EFI_EVENT Event,
+-  IN VOID     *Context) 
+-{
+-  return;
+-}
+-
+-EFI_HANDLE
+-EFIAPI
+-DeviceBootManagerBeforeConsole (
+-  OUT EFI_DEVICE_PATH_PROTOCOL  **DevicePath,
+-  OUT BDS_CONSOLE_CONNECT_ENTRY **PlatformConsoles)
+-{
+-  return NULL;
+-}
+-
+-EFI_DEVICE_PATH_PROTOCOL**
+-EFIAPI
+-DeviceBootManagerAfterConsole ()
+-{
+-  EFI_STATUS Status;
+-  EFI_EVENT  InitEvent;
+-
+-  // Create SD Card Init Event
+-  Status = gBS->CreateEventEx (EVT_NOTIFY_SIGNAL, TPL_CALLBACK, DummyNotify, NULL, &gSdCardInitGuid, &InitEvent);
+-  if (EFI_ERROR (Status)) {
+-    DEBUG ((EFI_D_ERROR, "%a: Failed to Create SD Card Init Event! Status = %r\n", __FUNCTION__, Status));
+-    return NULL;
+-  }
+-
+-  // Init SD Card
+-  gBS->SignalEvent (InitEvent);
+-  gBS->CloseEvent  (InitEvent);
+-
+-  return NULL;
+-}
+-
+-EFI_DEVICE_PATH_PROTOCOL**
+-EFIAPI
+-DeviceBootManagerOnDemandConInConnect ()
+-{
+-  EFI_STATUS Status;
+-  EFI_EVENT  InitEvent;
+-
+-  // Create USB Controller Start Event
+-  Status = gBS->CreateEventEx (EVT_NOTIFY_SIGNAL, TPL_CALLBACK, DummyNotify, NULL, &gUsbControllerInitGuid, &InitEvent);
+-  if (EFI_ERROR (Status)) {
+-    DEBUG ((EFI_D_ERROR, "%a: Failed to Create USB Port Controller Start Event! Status = %r\n", __FUNCTION__, Status));
+-    return NULL;
+-  }
+-
+-  // Start USB Controller
+-  gBS->SignalEvent (InitEvent);
+-  gBS->CloseEvent  (InitEvent);
+-
+-  return NULL;
+-}
+-
+-VOID
+-EFIAPI
+-DeviceBootManagerProcessBootCompletion (OUT EFI_BOOT_MANAGER_LOAD_OPTION *BootOption)
+-{
+-  return;
+-}
+-
+-EFI_STATUS
+-EFIAPI
+-DeviceBootManagerPriorityBoot (IN OUT EFI_BOOT_MANAGER_LOAD_OPTION *BootOption)
+-{
+-  return EFI_SUCCESS;
+-}
+-
+-VOID
+-EFIAPI
+-DeviceBootManagerUnableToBoot ()
+-{
+-  return;
+-}
+-
+-VOID
+-EFIAPI
+-DeviceBootManagerBdsEntry ()
+-{
+-  // Protect Shared RFS Area
+-  ProtectRfsSharedArea ();
+-}
++#include <Library/DebugLib.h>
++#include <Library/UefiBootServicesTableLib.h>
++#include <Library/DeviceBootManagerLib.h>
++#include <Library/RfsProtectionLib.h>
++#include <Library/IoLib.h>
 +
- 
- //
--// Memory Allocation Details
-+// BSOD Freeze: Intercept UEFI Runtime ResetSystem
- //
--STATIC EFI_LOADER_RANGE mLoaderRange[MAX_LOADER_RANGES] = {0};
--STATIC UINT8            mLoaderCount                    = 0;
 +STATIC
++VOID
++UfsDisableAutoHibern8 (VOID)
++{
++  // Check if UFS Host Controller is Enabled (HCE bit 0 at 0x01D84034)
++  if (MmioRead32 (0x01D84034) & 1) {
++    // Zero out Auto-Hibern8 Idle Timeout (AHIT) register at 0x01D84018
++    MmioWrite32 (0x01D84018, 0);
++  }
++}
++
++STATIC
++VOID
++DummyNotify (
++  IN EFI_EVENT Event,
++  IN VOID     *Context) 
++{
++  return;
++}
++
++EFI_HANDLE
++EFIAPI
++DeviceBootManagerBeforeConsole (
++  OUT EFI_DEVICE_PATH_PROTOCOL  **DevicePath,
++  OUT BDS_CONSOLE_CONNECT_ENTRY **PlatformConsoles)
++{
++  return NULL;
++}
++
++EFI_DEVICE_PATH_PROTOCOL**
++EFIAPI
++DeviceBootManagerAfterConsole ()
++{
++  EFI_STATUS Status;
++  EFI_EVENT  InitEvent;
++
++  // Create SD Card Init Event
++  Status = gBS->CreateEventEx (EVT_NOTIFY_SIGNAL, TPL_CALLBACK, DummyNotify, NULL, &gSdCardInitGuid, &InitEvent);
++  if (EFI_ERROR (Status)) {
++    DEBUG ((EFI_D_ERROR, "%a: Failed to Create SD Card Init Event! Status = %r\n", __FUNCTION__, Status));
++    return NULL;
++  }
++
++  // Init SD Card
++  gBS->SignalEvent (InitEvent);
++  gBS->CloseEvent  (InitEvent);
++
++  return NULL;
++}
++
++EFI_DEVICE_PATH_PROTOCOL**
++EFIAPI
++DeviceBootManagerOnDemandConInConnect ()
++{
++  EFI_STATUS Status;
++  EFI_EVENT  InitEvent;
++
++  // Create USB Controller Start Event
++  Status = gBS->CreateEventEx (EVT_NOTIFY_SIGNAL, TPL_CALLBACK, DummyNotify, NULL, &gUsbControllerInitGuid, &InitEvent);
++  if (EFI_ERROR (Status)) {
++    DEBUG ((EFI_D_ERROR, "%a: Failed to Create USB Port Controller Start Event! Status = %r\n", __FUNCTION__, Status));
++    return NULL;
++  }
++
++  // Start USB Controller
++  gBS->SignalEvent (InitEvent);
++  gBS->CloseEvent  (InitEvent);
++
++  return NULL;
++}
++
 +VOID
 +EFIAPI
-+BsodFreezeResetSystem (
-+  IN EFI_RESET_TYPE ResetType,
-+  IN EFI_STATUS     ResetStatus,
-+  IN UINTN          DataSize,
-+  IN VOID          *ResetData OPTIONAL)
++DeviceBootManagerProcessBootCompletion (OUT EFI_BOOT_MANAGER_LOAD_OPTION *BootOption)
 +{
-+  DEBUG ((EFI_D_WARN, "[KEP] Intercepted gRT->ResetSystem (Type %u) -> Freezing on BSOD!\n", (UINT32)ResetType));
-+  while (TRUE) {
-+    // Spin forever on BSOD
-+  }
++  return;
 +}
- 
- //
--// Winload Memory Details
-+// BSOD Freeze: Hook ArmSmc across all loader ranges
- //
--STATIC EFI_PHYSICAL_ADDRESS mWinloadBase   = 0;
--STATIC UINTN                mWinloadLength = 0;
-+STATIC
++
++EFI_STATUS
++EFIAPI
++DeviceBootManagerPriorityBoot (IN OUT EFI_BOOT_MANAGER_LOAD_OPTION *BootOption)
++{
++  // Disable UFS Auto-Hibern8 after all BDS connections and right before booting option
++  UfsDisableAutoHibern8 ();
++  return EFI_SUCCESS;
++}
++
 +VOID
-+HookArmSmcForBsod (VOID)
++EFIAPI
++DeviceBootManagerUnableToBoot ()
 +{
-+  EFI_PHYSICAL_ADDRESS SmcFunc = 0;
-+
-+  // 1. Locate ArmSmc (smc #0; ret) across all loader ranges
-+  for (UINTN i = 0; i < mLoaderCount && SmcFunc == 0; i++) {
-+    EFI_PHYSICAL_ADDRESS RBase = mLoaderRange[i].Base;
-+    UINTN                RLen  = mLoaderRange[i].Length;
-+
-+    if (RBase == 0 || RLen < 8) {
-+      continue;
-+    }
-+
-+    for (EFI_PHYSICAL_ADDRESS Cur = RBase; Cur + 8 <= RBase + RLen; Cur += ARM64_INSTRUCTION_LENGTH) {
-+      if (ARM64_INSTRUCTION (Cur) == 0xD4000003U &&
-+          ARM64_INSTRUCTION (Cur + 4) == 0xD65F03C0U) {
-+        SmcFunc = Cur;
-+        DEBUG ((EFI_D_WARN, "[KEP] Found ArmSmc at 0x%p in range [0x%p, 0x%llx]\n",
-+                SmcFunc, RBase, (UINT64)RLen));
-+        break;
-+      }
-+    }
-+  }
-+
-+  if (SmcFunc == 0) {
-+    DEBUG ((EFI_D_ERROR, "[KEP] WARNING: ArmSmc NOT found in any loader range!\n"));
-+    return;
-+  }
-+
-+  // 2. Locate 68 bytes of zero slack space INSIDE THE EXECUTABLE CODE SECTION containing SmcFunc
-+  EFI_PHYSICAL_ADDRESS SlackAddr = 0;
-+
-+  for (UINTN i = 0; i < mLoaderCount && SlackAddr == 0; i++) {
-+    EFI_PHYSICAL_ADDRESS RBase = mLoaderRange[i].Base;
-+    UINTN                RLen  = mLoaderRange[i].Length;
-+
-+    if (RBase == 0 || RLen < 0x1000) {
-+      continue;
-+    }
-+
-+    // Must be the image that contains SmcFunc
-+    if (SmcFunc < RBase || SmcFunc >= RBase + RLen) {
-+      continue;
-+    }
-+
-+    EFI_IMAGE_DOS_HEADER *Dos = (EFI_IMAGE_DOS_HEADER *)RBase;
-+    if (Dos->e_magic != EFI_IMAGE_DOS_SIGNATURE ||
-+        Dos->e_lfanew <= 0 || (UINTN)Dos->e_lfanew >= RLen - sizeof (EFI_IMAGE_NT_HEADERS64)) {
-+      continue;
-+    }
-+
-+    EFI_IMAGE_NT_HEADERS64 *Nt = (EFI_IMAGE_NT_HEADERS64 *)(RBase + Dos->e_lfanew);
-+    if (Nt->Signature != EFI_IMAGE_NT_SIGNATURE) {
-+      continue;
-+    }
-+
-+    EFI_IMAGE_SECTION_HEADER *Sec = (EFI_IMAGE_SECTION_HEADER *)((UINT8 *)&Nt->OptionalHeader + Nt->FileHeader.SizeOfOptionalHeader);
-+    for (UINT16 s = 0; s < Nt->FileHeader.NumberOfSections; s++) {
-+      if (!(Sec[s].Characteristics & EFI_IMAGE_SCN_MEM_EXECUTE)) {
-+        continue;
-+      }
-+
-+      EFI_PHYSICAL_ADDRESS SecBase = RBase + Sec[s].VirtualAddress;
-+      UINTN SecVSize               = Sec[s].Misc.VirtualSize;
-+      EFI_PHYSICAL_ADDRESS SecEnd  = SecBase + SecVSize;
-+
-+      // Check if SmcFunc belongs to this executable section
-+      if (SmcFunc >= SecBase && SmcFunc < SecEnd) {
-+        UINT32 Alignment = Nt->OptionalHeader.SectionAlignment;
-+        if (Alignment == 0) {
-+          Alignment = 0x1000;
-+        }
-+
-+        EFI_PHYSICAL_ADDRESS PadStart = (SecEnd + 0xF) & ~0xFULL;
-+        EFI_PHYSICAL_ADDRESS SecLimit = SecBase + ((SecVSize + Alignment - 1) & ~(Alignment - 1));
-+
-+        DEBUG ((EFI_D_WARN, "[KEP] Executable section: [0x%p - 0x%p], PadStart=0x%p, SecLimit=0x%p\n",
-+                SecBase, SecEnd, PadStart, SecLimit));
-+
-+        // Search in section padding first (end of virtual size to section alignment)
-+        for (EFI_PHYSICAL_ADDRESS Scan = PadStart; Scan + 68 <= SecLimit && Scan + 68 <= RBase + RLen; Scan += ARM64_INSTRUCTION_LENGTH) {
-+          BOOLEAN AllZero = TRUE;
-+          for (UINTN off = 0; off < 68; off += ARM64_INSTRUCTION_LENGTH) {
-+            if (ARM64_INSTRUCTION (Scan + off) != 0) {
-+              AllZero = FALSE;
-+              break;
-+            }
-+          }
-+          if (AllZero) {
-+            SlackAddr = Scan;
-+            DEBUG ((EFI_D_WARN, "[KEP] Found Slack in section alignment padding at 0x%p\n", SlackAddr));
-+            break;
-+          }
-+        }
-+
-+        // If not in padding, search forward from SmcFunc + 16 inside the executable section
-+        if (SlackAddr == 0) {
-+          for (EFI_PHYSICAL_ADDRESS Scan = SmcFunc + 16; Scan + 68 <= SecEnd; Scan += ARM64_INSTRUCTION_LENGTH) {
-+            BOOLEAN AllZero = TRUE;
-+            for (UINTN off = 0; off < 68; off += ARM64_INSTRUCTION_LENGTH) {
-+              if (ARM64_INSTRUCTION (Scan + off) != 0) {
-+                AllZero = FALSE;
-+                break;
-+              }
-+            }
-+            if (AllZero) {
-+              SlackAddr = Scan;
-+              DEBUG ((EFI_D_WARN, "[KEP] Found Slack inside executable section at 0x%p\n", SlackAddr));
-+              break;
-+            }
-+          }
-+        }
-+
-+        break;
-+      }
-+    }
-+  }
-+
-+  if (SlackAddr == 0) {
-+    DEBUG ((EFI_D_ERROR, "[KEP] ERROR: Could not find 68-byte zero slack in executable section!\n"));
-+    return;
-+  }
-+
-+  DEBUG ((EFI_D_WARN, "[KEP] Selected Slack at 0x%p (delta %lld bytes)\n",
-+          SlackAddr, (INT64)SlackAddr - (INT64)SmcFunc));
-+
-+  // 3. Write trampoline into SlackAddr
-+  // Filter exact reset/shutdown calls, execute normal SMC for all other PSCI calls
-+  CONST UINT32 Trampoline[] = {
-+    0x52800130U, // mov   w16, #0x9
-+    0x72B08010U, // movk  w16, #0x8400, lsl #16  (0x84000009 SYSTEM_RESET)
-+    0x6B10001FU, // cmp   w0, w16
-+    0x540001A0U, // b.eq  .Lfreeze
-+    0x51000610U, // sub   w16, w16, #0x1         (0x84000008 SYSTEM_OFF)
-+    0x6B10001FU, // cmp   w0, w16
-+    0x54000140U, // b.eq  .Lfreeze
-+    // PSCI_FEATURES (0x8400000A) must reach firmware. Keep branch offsets unchanged.
-+    0xD503201FU, // nop
-+    0xD503201FU, // nop
-+    0xD503201FU, // nop
-+    0x52800250U, // mov   w16, #0x12
-+    0x72B88010U, // movk  w16, #0xC400, lsl #16  (0xC4000012 SYSTEM_RESET2_64)
-+    0x6B10001FU, // cmp   w0, w16
-+    0x54000060U, // b.eq  .Lfreeze
-+    0xD4000003U, // smc   #0x0                   (Normal SMC execution)
-+    0xD65F03C0U, // ret                          (Return to caller)
-+    0x14000000U  // .Lfreeze: b .                (Freeze on BSOD!)
-+  };
-+
-+  for (UINTN w = 0; w < ARRAY_SIZE (Trampoline); w++) {
-+    ARM64_INSTRUCTION (SlackAddr + w * ARM64_INSTRUCTION_LENGTH) = Trampoline[w];
-+  }
-+
-+  WriteBackInvalidateDataCacheRange ((VOID *)SlackAddr, sizeof (Trampoline));
-+  InvalidateInstructionCacheRange   ((VOID *)SlackAddr, sizeof (Trampoline));
-+
-+  // 4. Hook SmcFunc: unconditional branch 'b SlackAddr' (opcode 0x14000000 | (imm26 & 0x03FFFFFF))
-+  INT64  Offset    = (INT64)SlackAddr - (INT64)SmcFunc;
-+  UINT32 BranchImm = (UINT32)((Offset / 4) & 0x03FFFFFFU);
-+  UINT32 BranchIns = 0x14000000U | BranchImm;
-+
-+  ARM64_INSTRUCTION (SmcFunc) = BranchIns;
-+  WriteBackInvalidateDataCacheRange ((VOID *)SmcFunc, ARM64_INSTRUCTION_LENGTH);
-+  InvalidateInstructionCacheRange   ((VOID *)SmcFunc, ARM64_INSTRUCTION_LENGTH);
-+
-+  DEBUG ((EFI_D_WARN, "[KEP] SUCCESS: Hooked ArmSmc at 0x%p -> Trampoline at 0x%p (B 0x%08X)\n",
-+          SmcFunc, SlackAddr, BranchIns));
++  return;
 +}
 +
-+//
-+// gBS Function Backups
-+//
-+STATIC EFI_ALLOCATE_PAGES     mOrigAllocatePages    = NULL;
-+STATIC EFI_EXIT_BOOT_SERVICES mOrigExitBootServices = NULL;
-+
- 
- EFI_STATUS
- EFIAPI
-@@ -43,58 +237,35 @@ KepAllocatePagesHook (
- {
-   EFI_STATUS Status;
- 
-+  // Intercept requests for addresses below DDR base (0x80000000)
-+  if ((Type == AllocateAddress || Type == AllocateMaxAddress) && Memory != NULL && *Memory < 0x80000000) {
-+    DEBUG ((EFI_D_INFO, "[KEP] Intercepted AllocatePages < 0x80000000 (Type %u, Addr 0x%llx, Pages: %lu) -> EFI_NOT_FOUND\n", Type, (UINT64)*Memory, (UINT64)Pages));
-+    return EFI_NOT_FOUND;
-+  }
-+
-   // Allocate Specified Pages
-   Status = mOrigAllocatePages (Type, MemoryType, Pages, Memory);
-   if (EFI_ERROR (Status)) {
-     return Status;
-   }
- 
--  // Save Memory Allocation
--  if (MemoryType == EfiLoaderCode && mLoaderCount < MAX_LOADER_RANGES) {
--    mLoaderRange[mLoaderCount].Base   = (EFI_PHYSICAL_ADDRESS)(*Memory);
--    mLoaderRange[mLoaderCount].Length = EFI_PAGES_TO_SIZE (Pages);
--    mLoaderCount++;
--  }
++VOID
++EFIAPI
++DeviceBootManagerBdsEntry ()
++{
++  // Protect Shared RFS Area
++  ProtectRfsSharedArea ();
++}
+diff --git a/Silicon/Qualcomm/QcomPkg/Library/PlatformBootManagerLib/PlatformBootManagerLib.inf b/Silicon/Qualcomm/QcomPkg/Library/PlatformBootManagerLib/PlatformBootManagerLib.inf
+index 73533646..c4c727ed 100644
+--- a/Silicon/Qualcomm/QcomPkg/Library/PlatformBootManagerLib/PlatformBootManagerLib.inf
++++ b/Silicon/Qualcomm/QcomPkg/Library/PlatformBootManagerLib/PlatformBootManagerLib.inf
+@@ -1,25 +1,27 @@
+-[Defines]
+-  INF_VERSION                    = 0x00010005
+-  BASE_NAME                      = PlatformBootManagerLib
+-  FILE_GUID                      = FF23E264-1815-415A-92F5-C6123140ED3B
+-  MODULE_TYPE                    = DXE_DRIVER
+-  VERSION_STRING                 = 1.0
+-  LIBRARY_CLASS                  = DeviceBootManagerLib|DXE_DRIVER
 -
--  // Go thru Saved Memory Allocations
--  for (UINT8 i = 0; i < mLoaderCount; i++) {
--    // Check for Winload Memory
--    if (IsWinloadMemory (mLoaderRange[i].Base, mLoaderRange[i].Length)) {
--      mWinloadBase   = mLoaderRange[i].Base;
--      mWinloadLength = mLoaderRange[i].Length;
--      break;
-+  // Save Code Allocations for post-load patching at ExitBootServices
-+  if ((MemoryType == EfiLoaderCode || MemoryType == EfiBootServicesCode || MemoryType == EfiLoaderData || MemoryType == EfiBootServicesData) &&
-+      Memory != NULL && *Memory != 0 && Pages > 0) {
-+    BOOLEAN AlreadyExists = FALSE;
-+    for (UINTN i = 0; i < mLoaderCount; i++) {
-+      if (mLoaderRange[i].Base == *Memory) {
-+        AlreadyExists = TRUE;
-+        break;
-+      }
-+    }
-+    if (!AlreadyExists && mLoaderCount < MAX_LOADER_RANGES) {
-+      mLoaderRange[mLoaderCount].Base   = *Memory;
-+      mLoaderRange[mLoaderCount].Length = EFI_PAGES_TO_SIZE (Pages);
-+      mLoaderCount++;
-     }
-   }
- 
--  // Verify Winload Base
--  if (!mWinloadBase) {
--    return EFI_SUCCESS;
--  }
+-[Sources]
+-  PlatformBootManager.c
 -
--  // Unprotect Winload Memory
--  Status = SetWinloadProtection (mWinloadBase, mWinloadLength, FALSE);
--  if (EFI_ERROR (Status)) {
--    DEBUG ((EFI_D_ERROR, "[KEP] Failed to Unprotect Winload Memory! Status = %r\n", Status));
--    goto restore;
--  }
+-[Packages]
+-  MdePkg/MdePkg.dec
+-  MdeModulePkg/MdeModulePkg.dec
+-  MsCorePkg/MsCorePkg.dec
+-  QcomPkg/QcomPkg.dec
 -
--  // Apply Platform Specific Patches
--  ApplyPlatformErrataPatches (mWinloadBase, mWinloadLength);
+-[LibraryClasses]
+-  DebugLib
+-  UefiBootServicesTableLib
+-  RfsProtectionLib
 -
--  // Reprotect Winload Memory
--  Status = SetWinloadProtection (mWinloadBase, mWinloadLength, TRUE);
--  if (EFI_ERROR (Status)) {
--    DEBUG ((EFI_D_ERROR, "[KEP] Failed to Reprotect Winload Memory! Status = %r\n", Status));
--  }
--
--restore:
--  // Restore Original "AllocatePages"
--  gBS->AllocatePages = mOrigAllocatePages;
--
--  // Calculate new CRC32
--  gBS->Hdr.CRC32 = 0;
--  gBS->CalculateCrc32 (gBS, sizeof (EFI_BOOT_SERVICES), &gBS->Hdr.CRC32);
--
-   return EFI_SUCCESS;
- }
- 
-@@ -108,37 +279,54 @@ KepExitBootServicesHook (
-   UINT8      *ShellCode;
-   UINTN       ShellCodeSize;
- 
--  // Restore Original EBS
--  gBS->ExitBootServices = mOrigExitBootServices;
--  gBS->Hdr.CRC32        = 0;
-+  DEBUG ((EFI_D_WARN, "[KEP] KepExitBootServicesHook: Scanning %u loader ranges...\n", (UINT32)mLoaderCount));
- 
--  // Calculate new CRC32
--  gBS->CalculateCrc32 (gBS, sizeof (EFI_BOOT_SERVICES), &gBS->Hdr.CRC32);
-+  // Now that all modules are loaded into memory, apply errata patches and locate winload.efi
-+  for (UINTN i = 0; i < mLoaderCount; i++) {
-+    EFI_PHYSICAL_ADDRESS RangeBase   = mLoaderRange[i].Base;
-+    UINTN                RangeLength = mLoaderRange[i].Length;
- 
--  // Unprotect Winload Memory
--  Status = SetWinloadProtection (mWinloadBase, mWinloadLength, FALSE);
--  if (EFI_ERROR (Status)) {
--    DEBUG ((EFI_D_ERROR, "[KEP] Failed to Unprotect Winload Memory! Status = %r\n", Status));
--    goto exit;
--  }
-+    if (RangeBase == 0 || RangeLength == 0) {
-+      continue;
-+    }
+-[Guids]
+-  gUsbControllerInitGuid
+-  gSdCardInitGuid
++[Defines]
++  INF_VERSION                    = 0x00010005
++  BASE_NAME                      = PlatformBootManagerLib
++  FILE_GUID                      = FF23E264-1815-415A-92F5-C6123140ED3B
++  MODULE_TYPE                    = DXE_DRIVER
++  VERSION_STRING                 = 1.0
++  LIBRARY_CLASS                  = DeviceBootManagerLib|DXE_DRIVER
 +
-+    SetWinloadProtection (RangeBase, RangeLength, FALSE);
++[Sources]
++  PlatformBootManager.c
 +
-+    ApplyPlatformErrataPatches (RangeBase, RangeLength);
- 
--  // Get Platform Shell Code
--  GetPlatformShellCode (&ShellCode, &ShellCodeSize);
-+    if (!mWinloadBase && IsWinloadMemory (RangeBase, RangeLength)) {
-+      mWinloadBase   = RangeBase;
-+      mWinloadLength = RangeLength;
-+      DEBUG ((EFI_D_WARN, "[KEP] Found Winload at 0x%p (Size 0x%llx)\n", mWinloadBase, (UINT64)mWinloadLength));
-+    }
- 
--  // Verify Platform Shell Code
--  if (ShellCode != NULL && ShellCodeSize != 0) {
--    // Patch Transfer to Kernel
--    PatchTransferToKernel (mWinloadBase, mWinloadLength, ShellCode, ShellCodeSize);
-   }
- 
--  // Reprotect Winload Memory
--  Status = SetWinloadProtection (mWinloadBase, mWinloadLength, TRUE);
--  if (EFI_ERROR (Status)) {
--    DEBUG ((EFI_D_ERROR, "[KEP] Failed to Reprotect Winload Memory! Status = %r\n", Status));
-+  // Hook ArmSmc across all loader ranges to freeze permanently on BSOD
-+  HookArmSmcForBsod ();
++[Packages]
++  MdePkg/MdePkg.dec
++  MdeModulePkg/MdeModulePkg.dec
++  MsCorePkg/MsCorePkg.dec
++  QcomPkg/QcomPkg.dec
 +
-+  // Intercept UEFI Runtime ResetSystem to prevent rebooting on firmware return
-+  gRT->ResetSystem = BsodFreezeResetSystem;
-+  gRT->Hdr.CRC32   = 0;
-+  gBS->CalculateCrc32 (gRT, sizeof (EFI_RUNTIME_SERVICES), &gRT->Hdr.CRC32);
++[LibraryClasses]
++  DebugLib
++  UefiBootServicesTableLib
++  RfsProtectionLib
++  IoLib
 +
-+  (VOID)ShellCode;
-+  (VOID)ShellCodeSize;
-+  (VOID)Status;
-+  if (mWinloadBase != 0 && mWinloadLength != 0) {
-+    DEBUG ((EFI_D_WARN, "[KEP] Direct PE errata patches applied; skipping legacy winload shellcode injection\n"));
-+  } else {
-+    DEBUG ((EFI_D_ERROR, "[KEP] WARNING: Winload NOT detected among %u ranges!\n", (UINT32)mLoaderCount));
-   }
- 
--exit:
--  // Call Original EBS
-+  // Restore Original Boot Services
-+  if (mOrigAllocatePages != NULL) {
-+    gBS->AllocatePages = mOrigAllocatePages;
-+  }
-+  gBS->ExitBootServices = mOrigExitBootServices;
-+  gBS->Hdr.CRC32        = 0;
-+  gBS->CalculateCrc32 (gBS, sizeof (EFI_BOOT_SERVICES), &gBS->Hdr.CRC32);
-+
-   return gBS->ExitBootServices (ImageHandle, MapKey);
- }
- 
-@@ -148,13 +336,15 @@ ReadyToBootHandler (
-   IN EFI_EVENT  Event,
-   IN VOID      *Context)
- {
--  // Save Original gBS Functions
--  mOrigExitBootServices = gBS->ExitBootServices;
--  mOrigAllocatePages    = gBS->AllocatePages;
-+  if (gBS->AllocatePages != KepAllocatePagesHook) {
-+    mOrigAllocatePages = gBS->AllocatePages;
-+    gBS->AllocatePages = KepAllocatePagesHook;
-+  }
- 
--  // Hook into gBS
--  gBS->AllocatePages    = KepAllocatePagesHook;
--  gBS->ExitBootServices = KepExitBootServicesHook;
-+  if (gBS->ExitBootServices != KepExitBootServicesHook) {
-+    mOrigExitBootServices = gBS->ExitBootServices;
-+    gBS->ExitBootServices = KepExitBootServicesHook;
-+  }
- 
-   // Calculate new CRC32
-   gBS->Hdr.CRC32 = 0;
-@@ -173,6 +363,21 @@ KernelErrataPatcherLibConstructor (
-   EFI_STATUS Status;
-   EFI_EVENT  ReadyToBootEvent;
- 
-+  if (gBS != NULL) {
-+    if (gBS->AllocatePages != NULL && gBS->AllocatePages != KepAllocatePagesHook) {
-+      mOrigAllocatePages = gBS->AllocatePages;
-+      gBS->AllocatePages = KepAllocatePagesHook;
-+    }
-+
-+    if (gBS->ExitBootServices != NULL && gBS->ExitBootServices != KepExitBootServicesHook) {
-+      mOrigExitBootServices = gBS->ExitBootServices;
-+      gBS->ExitBootServices = KepExitBootServicesHook;
-+    }
-+
-+    gBS->Hdr.CRC32 = 0;
-+    gBS->CalculateCrc32 (gBS, sizeof (EFI_BOOT_SERVICES), &gBS->Hdr.CRC32);
-+  }
-+
-   // Create Ready To Boot Event
-   Status = gBS->CreateEventEx (EVT_NOTIFY_SIGNAL, TPL_CALLBACK, ReadyToBootHandler, NULL, &gEfiEventReadyToBootGuid, &ReadyToBootEvent);
-   if (EFI_ERROR (Status)) {
-diff --git a/Silicon/Silicium/SiliciumPkg/Library/KernelErrataPatcherLib/KernelErrataPatcherLib.h b/Silicon/Silicium/SiliciumPkg/Library/KernelErrataPatcherLib/KernelErrataPatcherLib.h
-index 8e87739a..d4e21d77 100644
---- a/Silicon/Silicium/SiliciumPkg/Library/KernelErrataPatcherLib/KernelErrataPatcherLib.h
-+++ b/Silicon/Silicium/SiliciumPkg/Library/KernelErrataPatcherLib/KernelErrataPatcherLib.h
-@@ -14,7 +14,7 @@
- //
- // Save Limits
- //
--#define MAX_LOADER_RANGES 64
-+#define MAX_LOADER_RANGES 2048
- 
- //
- // Memory Area Structure
-diff --git a/Silicon/Silicium/SiliciumPkg/Library/KernelErrataPatcherLib/KernelErrataPatcherLib.inf b/Silicon/Silicium/SiliciumPkg/Library/KernelErrataPatcherLib/KernelErrataPatcherLib.inf
-index 4492e16a..93cdac2d 100644
---- a/Silicon/Silicium/SiliciumPkg/Library/KernelErrataPatcherLib/KernelErrataPatcherLib.inf
-+++ b/Silicon/Silicium/SiliciumPkg/Library/KernelErrataPatcherLib/KernelErrataPatcherLib.inf
-@@ -26,6 +26,7 @@
- [LibraryClasses]
-   DebugLib
-   UefiBootServicesTableLib
-+  UefiRuntimeServicesTableLib
-   CacheMaintenanceLib
-   ErrataPatchesLib
-   PerformanceLib
-diff --git a/Silicon/Silicium/SiliciumPkg/Library/KernelErrataPatcherLib/Winload.c b/Silicon/Silicium/SiliciumPkg/Library/KernelErrataPatcherLib/Winload.c
-index 70bc7ab9..dfcc97c9 100644
---- a/Silicon/Silicium/SiliciumPkg/Library/KernelErrataPatcherLib/Winload.c
-+++ b/Silicon/Silicium/SiliciumPkg/Library/KernelErrataPatcherLib/Winload.c
-@@ -26,6 +26,10 @@ IsWinloadMemory (
-   IN EFI_PHYSICAL_ADDRESS Base,
-   IN UINTN                Length)
- {
-+  if (Base == 0 || Length < 0x2000) {
-+    return FALSE;
-+  }
-+
-   // Populate DOS Header
-   EFI_IMAGE_DOS_HEADER *DosHeader = (EFI_IMAGE_DOS_HEADER *)Base;
- 
-@@ -34,6 +38,11 @@ IsWinloadMemory (
-     return FALSE;
-   }
- 
-+  // Verify e_lfanew offset within bounds
-+  if (DosHeader->e_lfanew <= 0 || (UINTN)DosHeader->e_lfanew >= Length - sizeof (EFI_IMAGE_NT_HEADERS64)) {
-+    return FALSE;
-+  }
-+
-   // Populate NT Header
-   EFI_IMAGE_NT_HEADERS64 *NtHeader = (EFI_IMAGE_NT_HEADERS64 *)(Base + DosHeader->e_lfanew);
- 
-@@ -47,11 +56,15 @@ IsWinloadMemory (
-     // Get "TransferToKernel" Function Offset
-     UINT16 TransferToKernelOffset = CodebaseSemester[i].TransferToKernelOffset;
- 
-+    if (Length <= (UINTN)TransferToKernelOffset + ARM64_TOTAL_INSTRUCTION_LENGTH (2)) {
-+      continue;
-+    }
-+
-     // Save TransferToKernel Function Location
-     mTransferToKernelAddr = Base + TransferToKernelOffset;
- 
-     // Go thru TransferToKernel Memory Area
--    for (EFI_PHYSICAL_ADDRESS Current = mTransferToKernelAddr; Current < mTransferToKernelAddr + (Length - TransferToKernelOffset); Current += ARM64_INSTRUCTION_LENGTH) {
-+    for (EFI_PHYSICAL_ADDRESS Current = mTransferToKernelAddr; Current < mTransferToKernelAddr + (Length - TransferToKernelOffset - ARM64_TOTAL_INSTRUCTION_LENGTH (1)); Current += ARM64_INSTRUCTION_LENGTH) {
-       // Verify Branch Instruction
-       if (ARM64_INSTRUCTION (Current) != ARM64_BRANCH_LOCATION_INSTRUCTION (Current, mTransferToKernelAddr)) {
-         continue;
-@@ -63,7 +76,7 @@ IsWinloadMemory (
-       }
- 
-       // Show Winload Details
--      DEBUG ((EFI_D_WARN, "[KEP] Winload Memory Range      = 0x%p - 0x%llx\n", Base, Length));
-+      DEBUG ((EFI_D_WARN, "[KEP] Winload Memory Range      = 0x%p - 0x%llx\n", Base, (UINT64)Length));
-       DEBUG ((EFI_D_WARN, "[KEP] Winload Codebase Semester = %a\n", CodebaseSemester[i].Name));
- 
-       // Save Target Patch Instruction
++[Guids]
++  gUsbControllerInitGuid
++  gSdCardInitGuid
++  gEfiEventExitBootServicesGuid

@@ -1,5 +1,4 @@
 #!/usr/bin/env python3
-"""Generate giulia ACPI tables from SM8650 DTS-verified constants."""
 import struct
 from pathlib import Path
 
@@ -18,7 +17,7 @@ def finish(data):
     assert sum(data) & 0xff == 0
     return bytes(data)
 
-def madt(enabled_cores=6):
+def madt(enabled_cores=8):
     body = struct.pack('<II', 0, 0)
     for uid, mpidr in enumerate(MPIDRS):
         entry = bytearray(80)
@@ -43,6 +42,6 @@ def madt(enabled_cores=6):
     body += struct.pack('<BBH I Q I B 3s', 0x0c, 24, 0, 0, GICD, 0, 3, b'\0\0\0')
     return finish(header(b'APIC', 36 + len(body), 5) + body)
 
-(OUT / 'APIC.aml').write_bytes(madt(enabled_cores=6))
+(OUT / 'APIC.aml').write_bytes(madt(enabled_cores=8))
 assert sum((OUT / 'APIC.aml').read_bytes()) & 0xff == 0
-print("generated APIC.aml (256KB stride, CPU0-CPU5 enabled, 6 cores, correct efficiency classes); checksum=ok")
+print("generated APIC.aml (256KB stride, CPU0-CPU7 enabled, 8 cores, correct efficiency classes); checksum=ok")

@@ -3,7 +3,7 @@
  * AML/ASL+ Disassembler version 20230628 (64-bit version)
  * Copyright (c) 2000 - 2023 Intel Corporation
  * 
- * Disassembly of FACP.aml, Sat Nov 14 19:05:02 2026
+ * Disassembly of FACP.aml, Fri Nov 20 18:51:42 2026
  *
  * ACPI Data Table [FACP]
  *
@@ -13,7 +13,7 @@
 [000h 0000 004h]                   Signature : "FACP"    [Fixed ACPI Description Table (FADT)]
 [004h 0004 004h]                Table Length : 00000114
 [008h 0008 001h]                    Revision : 06
-[009h 0009 001h]                    Checksum : 4B
+[009h 0009 001h]                    Checksum : 6B
 [00Ah 0010 006h]                      Oem ID : "QCOM  "
 [010h 0016 008h]                Oem Table ID : "QCOMEDK2"
 [018h 0024 004h]                Oem Revision : 00008550
@@ -63,7 +63,7 @@
                 PCIe ASPM Not Supported (V4) : 0
                    CMOS RTC Not Present (V5) : 0
 [06Fh 0111 001h]                    Reserved : 00
-[070h 0112 004h]       Flags (decoded below) : 00300000
+[070h 0112 004h]       Flags (decoded below) : 00100000
       WBINVD instruction is operational (V1) : 0
               WBINVD flushes all caches (V1) : 0
                     All CPUs support C1 (V1) : 0
@@ -85,7 +85,7 @@
                  Use APIC Cluster Model (V4) : 0
      Use APIC Physical Destination Mode (V4) : 0
                        Hardware Reduced (V5) : 1
-                      Low Power S0 Idle (V5) : 1
+                      Low Power S0 Idle (V5) : 0
 
 [074h 0116 00Ch]              Reset Register : [Generic Address Structure]
 [074h 0116 001h]                    Space ID : 03 [EmbeddedControl]
@@ -177,14 +177,14 @@
 
 Raw Table Data: Length 276 (0x114)
 
-    0000: 46 41 43 50 14 01 00 00 06 4B 51 43 4F 4D 20 20  // FACP.....KQCOM  
+    0000: 46 41 43 50 14 01 00 00 06 6B 51 43 4F 4D 20 20  // FACP.....kQCOM  
     0010: 51 43 4F 4D 45 44 4B 32 50 85 00 00 51 43 4F 4D  // QCOMEDK2P...QCOM
     0020: 01 00 00 00 00 00 00 00 00 00 00 00 00 08 00 00  // ................
     0030: 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00  // ................
     0040: 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00  // ................
     0050: 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00  // ................
     0060: 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00  // ................
-    0070: 00 00 30 00 03 00 00 03 B4 20 90 00 00 00 00 00  // ..0...... ......
+    0070: 00 00 10 00 03 00 00 03 B4 20 90 00 00 00 00 00  // ......... ......
     0080: 01 01 00 00 00 00 00 00 00 00 00 00 00 00 00 00  // ................
     0090: 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00  // ................
     00A0: 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00  // ................

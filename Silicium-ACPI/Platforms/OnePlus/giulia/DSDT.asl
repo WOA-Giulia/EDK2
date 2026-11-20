@@ -8,8 +8,8 @@ DefinitionBlock ("DSDT.aml", "DSDT", 2, "OPLUS ", "GIULIA  ", 1)
         Device (CPU3) { Name (_HID, "ACPI0007") Name (_UID, 3) Method (_STA, 0, NotSerialized) { Return (0x0F) } }
         Device (CPU4) { Name (_HID, "ACPI0007") Name (_UID, 4) Method (_STA, 0, NotSerialized) { Return (0x0F) } }
         Device (CPU5) { Name (_HID, "ACPI0007") Name (_UID, 5) Method (_STA, 0, NotSerialized) { Return (0x0F) } }
-        Device (CPU6) { Name (_HID, "ACPI0007") Name (_UID, 6) Method (_STA, 0, NotSerialized) { Return (0x00) } }
-        Device (CPU7) { Name (_HID, "ACPI0007") Name (_UID, 7) Method (_STA, 0, NotSerialized) { Return (0x00) } }
+        Device (CPU6) { Name (_HID, "ACPI0007") Name (_UID, 6) Method (_STA, 0, NotSerialized) { Return (0x0F) } }
+        Device (CPU7) { Name (_HID, "ACPI0007") Name (_UID, 7) Method (_STA, 0, NotSerialized) { Return (0x0F) } }
 
         Device (ADP1)
         {
@@ -32,7 +32,7 @@ DefinitionBlock ("DSDT.aml", "DSDT", 2, "OPLUS ", "GIULIA  ", 1)
         {
             Name (_HID, "QCOM24A5")
             Name (_UID, Zero)
-            Name (_CCA, Zero)
+            Name (_CCA, One)
 
             Method (_STA, 0, NotSerialized)
             {

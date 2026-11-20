@@ -148,10 +148,10 @@ index 6712a076..b5cb59cf 100644
 +#    INF Binaries/giulia/QcomPkg/Drivers/PILDxe/PILDxe.inf
 +#    INF Binaries/giulia/QcomPkg/Drivers/PILProxyDxe/PILProxyDxe.inf
 diff --git a/Platforms/OnePlus/giuliaPkg/Library/MemoryMapLib/MemoryMapLib.c b/Platforms/OnePlus/giuliaPkg/Library/MemoryMapLib/MemoryMapLib.c
-index f9023c85..08c2117c 100644
+index f9023c85..07e8e725 100644
 --- a/Platforms/OnePlus/giuliaPkg/Library/MemoryMapLib/MemoryMapLib.c
 +++ b/Platforms/OnePlus/giuliaPkg/Library/MemoryMapLib/MemoryMapLib.c
-@@ -6,13 +6,22 @@ gMemoryDescriptor[] = {
+@@ -6,15 +6,24 @@ gMemoryDescriptor[] = {
    // Name, Address, Length, HobOption, ResourceType, ResourceAttribute, MemoryType, ArmAttribute
  
    // DDR Regions
@@ -172,8 +172,11 @@ index f9023c85..08c2117c 100644
 +  {"QLink_Logging",         0x84800000, 0x00200000, AddMem, MEM_RES, UNCACHEABLE, Reserv, UNCACHED_UNBUFFERED_XN},
 +  {"DSM",                   0x84A00000, 0x07200000, AddMem, SYS_MEM, SYS_MEM_CAP, Reserv, WRITE_BACK_XN},
    {"PIL_Reserved",        0x8BC00000, 0x17580000, AddMem, MEM_RES, UNCACHEABLE, Reserv, UNCACHED_UNBUFFERED_XN},
-   {"DBI_Dump",            0xA6100000, 0x00F00000, NoHob,  MMAP_IO, INITIALIZED, Conv,   UNCACHED_UNBUFFERED_XN},
+-  {"DBI_Dump",            0xA6100000, 0x00F00000, NoHob,  MMAP_IO, INITIALIZED, Conv,   UNCACHED_UNBUFFERED_XN},
++  {"DBI_Dump",            0xA6100000, 0x00F00000, NoHob,  MMAP_IO, INITIALIZED, Reserv, UNCACHED_UNBUFFERED_XN},
    {"FD_Reserved",         0xA7000000, 0x00100000, AddMem, SYS_MEM, SYS_MEM_CAP, BsData, WRITE_BACK},
+   {"UEFI_FD",             0xA7100000, 0x00300000, AddMem, SYS_MEM, SYS_MEM_CAP, BsData, WRITE_BACK},
+   {"UEFI_FD_Reserved",    0xA7400000, 0x00200000, AddMem, SYS_MEM, SYS_MEM_CAP, BsData, WRITE_BACK},
 @@ -28,8 +37,13 @@ gMemoryDescriptor[] = {
    {"UEFI_RESV",           0xA7ED9000, 0x00127000, AddMem, SYS_MEM, SYS_MEM_CAP, BsData, WRITE_BACK_XN},
    {"Kernel",              0xA8000000, 0x10000000, AddMem, SYS_MEM, SYS_MEM_CAP, Reserv, WRITE_BACK_XN},
